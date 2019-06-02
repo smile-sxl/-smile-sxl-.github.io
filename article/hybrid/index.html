@@ -226,9 +226,9 @@
 <p>WebView组件是Android提供用于显示网页信息，它内置了WebKit引擎，WebKit是一个开源的浏览器引擎，Chrome浏览器也是基于它，所以我们可以把WebView当做一个轻量级的浏览器使用。如果对WebView的使用以及方法不是很了解，可以看<a href="https://www.jianshu.com/p/3c94ae673e2a" target="_blank" rel="noopener">Android：这是一份全面 &amp; 详细的Webview使用攻略</a>这篇文章，这里面讲解了WebView 的基本使用。</p>
 <h3 id="二-交互小demo">二、交互小Demo</h3>
 <p>下面我们进入正题，WebView 是如何与JS 进行交互的。请看下面这个图片：</p>
-<p><img src="/article/hybrid/./hybrid/webview.png" alt=""></p>
+<p><img src="/article/hybrid/webview.png" alt=""></p>
 <p>蓝色的部分是WebView控件，加载的是本地的一个HTML 网页。黄色的是app 本身的布局，在输入框中输入数据然后点击发送，就能把数据发送给Js进行处理，在网页中点击发送按钮，也同样的能把网页中输入框内的数据发送给app 本身并显示出来，这个小Demo 就简单的实现了WebView与js 整个的交互过程。下面看整个交互流程图：</p>
-<p><img src="/article/hybrid/./hybrid/hybrid.gif" alt=""></p>
+<p><img src="/article/hybrid/hybrid.gif" alt=""></p>
 <p>OK ,下面我们来实现这个小Demo。</p>
 <h3 id="三-具体实现">三、具体实现</h3>
 <h4 id="1-首先是界面xml-布局">1、首先是界面xml 布局</h4>
@@ -452,7 +452,7 @@
 
                 
                     <li>
-                        <a target="_blank" href="https://github.com/huweihuang">
+                        <a target="_blank" href="https://github.com/smile-sxl">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-github fa-stack-1x fa-inverse"></i>

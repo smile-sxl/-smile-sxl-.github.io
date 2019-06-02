@@ -8,16 +8,32 @@
     </url>
 
     <url>
-        <loc>http://www.xianleshen.com/article/bluetooth/</loc>
-        <lastmod>2019-06-02T02:53:04.882Z</lastmod>
+        <loc>http://www.xianleshen.com/article/mvp/</loc>
+        <lastmod>2019-06-02T03:01:48.870Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
     </url>
 
     <url>
-        <loc>http://www.xianleshen.com/article/mvp/</loc>
-        <lastmod>2019-06-02T01:57:06.655Z</lastmod>
+        <loc>http://www.xianleshen.com/article/hybrid/</loc>
+        <lastmod>2019-06-02T03:01:08.584Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://www.xianleshen.com/article/http/</loc>
+        <lastmod>2019-06-02T03:00:46.878Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://www.xianleshen.com/article/bluetooth/</loc>
+        <lastmod>2019-06-02T02:59:52.191Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -26,22 +42,6 @@
     <url>
         <loc>http://www.xianleshen.com/article/hexo-theme-huweihuang/</loc>
         <lastmod>2019-06-02T01:56:13.582Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://www.xianleshen.com/article/hybrid/</loc>
-        <lastmod>2019-06-02T01:56:05.597Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://www.xianleshen.com/article/http/</loc>
-        <lastmod>2019-06-02T01:54:47.202Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
