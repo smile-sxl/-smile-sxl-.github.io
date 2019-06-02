@@ -8,6 +8,14 @@
     </url>
 
     <url>
+        <loc>http://www.xianleshen.com/article/http2/</loc>
+        <lastmod>2019-06-02T08:55:57.209Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://www.xianleshen.com/article/thridLogin/</loc>
         <lastmod>2019-06-02T08:45:15.980Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -34,14 +42,6 @@
     <url>
         <loc>http://www.xianleshen.com/article/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86/</loc>
         <lastmod>2019-06-02T08:33:36.201Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://www.xianleshen.com/article/http2/</loc>
-        <lastmod>2019-06-02T08:31:59.231Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
