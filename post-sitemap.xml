@@ -8,6 +8,54 @@
     </url>
 
     <url>
+        <loc>http://www.xianleshen.com/article/thridLogin/</loc>
+        <lastmod>2019-06-02T08:38:02.531Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://www.xianleshen.com/article/git/</loc>
+        <lastmod>2019-06-02T08:36:01.615Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://www.xianleshen.com/article/http3/</loc>
+        <lastmod>2019-06-02T08:34:27.541Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://www.xianleshen.com/article/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86/</loc>
+        <lastmod>2019-06-02T08:33:36.201Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://www.xianleshen.com/article/http2/</loc>
+        <lastmod>2019-06-02T08:31:59.231Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://www.xianleshen.com/article/bluetooth/</loc>
+        <lastmod>2019-06-02T08:24:47.294Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://www.xianleshen.com/article/mvp/</loc>
         <lastmod>2019-06-02T03:01:48.870Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -26,14 +74,6 @@
     <url>
         <loc>http://www.xianleshen.com/article/http/</loc>
         <lastmod>2019-06-02T03:00:46.878Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://www.xianleshen.com/article/bluetooth/</loc>
-        <lastmod>2019-06-02T02:59:52.191Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

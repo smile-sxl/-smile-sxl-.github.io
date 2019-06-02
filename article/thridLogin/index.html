@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+           Android QQ、微信、Facebook和推特第三方登录 - 沈显乐
+        
+    </title>
+
+    <link rel="canonical" href="http://www.xianleshen.com/article/thridLogin/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
+                            
+                        </div>
+                        <h1> Android QQ、微信、Facebook和推特第三方登录</h1>
+                        <h2 class="subheading">第三方登录</h2>
+                        <span class="meta">
+                            Posted by  on
+                            2018-09-08
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">沈显乐</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>        在Android 很多的APP应用中，都需要利用第三方登录来实现APP 自己本身应用的快速登录。这里的第三方平台，一般是已经有大量用户的平台，比如说国内的QQ,微信，国外的Facebook和Twitter 等，而本篇博客主要实现了这四个平台的登录。<br>
+<img src="https://img-blog.csdn.net/20180908192653627" alt=""></p>
+<h2 id="qq登录">QQ登录</h2>
+<p>        首先进入 <a href="http://op.open.qq.com/appregv2/" target="_blank" rel="noopener">腾讯开放平台</a>，登录后可以根据自己的需要注册个人或者公司的开发者账号，然后创建一个Android应用，获取应用的APPID。因为我本人很久之前就注册了开发者账号，不知道现在重新注册后会跳转到哪一个界面，所以已注册的开发者可以<a href="http://op.open.qq.com/appregv2/" target="_blank" rel="noopener">直接点击这</a>，进入应用创建界面。创建应用成功后，能够得到应用的APP ID 和 APP KEY，第三方登录会用到这个信息。<a href="http://wiki.connect.qq.com/sdk%E4%B8%8B%E8%BD%BD" target="_blank" rel="noopener">点击链接下载最新的SDK.jar</a>，也可以在下面的项目中拿到已经下载好的jar 包。成功引用jar后，开始代码的实现。<br>
+首先实现一个监听：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class BaseUiListener implements IUiListener &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void onCancel() &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void onComplete(Object arg0) &#123;</span><br><span class="line">		doComplete((JSONObject)arg0);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	protected void doComplete(JSONObject values) &#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void onError(UiError arg0) &#123;</span><br><span class="line">		// TODO Auto-generated method stu</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>        然后在登录界面实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//应用需要获得哪些接口的权限，由“，”分隔  所有权限用“all”</span><br><span class="line">String Scope = &quot;get_user_info,add_t,qrcode&quot;;</span><br><span class="line">// 启动QQ登录SDK</span><br><span class="line">mTencent = Tencent.createInstance(QQAppID, getApplicationContext());</span><br><span class="line">// 启动QQ登录SDK</span><br><span class="line">listener = new BaseUiListener() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    protected void doComplete(JSONObject values) &#123;</span><br><span class="line">        Toast.makeText(MainActivity.this, &quot;QQ 登录成功-----&quot; + values, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">// 执行登录方法</span><br><span class="line">mTencent.login(MainActivity.this, Scope, listener);</span><br><span class="line"></span><br><span class="line">//应用调用Andriod_SDK接口时，如果要成功接收到回调，需要在调用接口的Activity的onActivityResult方法中增加如下代码：</span><br><span class="line">if (requestCode == Constants.REQUEST_LOGIN) &#123;</span><br><span class="line">	Tencent.onActivityResultData(requestCode, resultCode, data, listener);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>        最后还要在AndroidManifest.xml中增加配置的<application>节点下增加以下配置（注：不配置将会导致无法调用API）</application></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;</span><br><span class="line"> </span><br><span class="line">&lt;application&gt;</span><br><span class="line"> &lt;activity</span><br><span class="line">       android:name=&quot;com.tencent.tauth.AuthActivity&quot;</span><br><span class="line">       android:noHistory=&quot;true&quot;</span><br><span class="line">       android:launchMode=&quot;singleTask&quot; &gt;</span><br><span class="line">    &lt;intent-filter&gt;</span><br><span class="line">           &lt;action android:name=&quot;android.intent.action.VIEW&quot; /&gt;</span><br><span class="line">           &lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt;</span><br><span class="line">           &lt;category android:name=&quot;android.intent.category.BROWSABLE&quot; /&gt;</span><br><span class="line">           &lt;data android:scheme=&quot;tencent你的AppId&quot; /&gt;</span><br><span class="line">    &lt;/intent-filter&gt;</span><br><span class="line"> &lt;/activity&gt;</span><br><span class="line">&lt;activity</span><br><span class="line">       android:name=&quot;com.tencent.connect.common.AssistActivity&quot;</span><br><span class="line">       android:configChanges=&quot;orientation|keyboardHidden&quot;</span><br><span class="line">       android:screenOrientation=&quot;behind&quot; </span><br><span class="line"> </span><br><span class="line">android:theme=&quot;@android:style/Theme.Translucent.NoTitleBar&quot; /&gt;</span><br><span class="line">&lt;application&gt;</span><br></pre></td></tr></table></figure>
+<p>##微信登录<br>
+        首先进入<a href="https://open.weixin.qq.com/" target="_blank" rel="noopener">微信开发平台</a>，登录后可以根据自己的需要注册个人或者公司的开发者账号，然后创建一个Android应用。填写完毕后，点击 提交审核，提交审核成功，7天内微信会给出审核结果。审核通过后，应用的APPID和APPKey就可以使用了。审核通过后在管理中心的移动应用列表点击查看，拿到应用的AppID和AppSecret。因为微信SDK改成通过Gradle的方式发布到jcenter，所以在Android Studio 中的build.gradle文件中，添加远程依赖实现SDK 库的加载。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile &apos;com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+&apos;</span><br></pre></td></tr></table></figure>
+<p>        在你的包名相应目录下新建一个wxapi目录，并在该wxapi目录下新增一个WXEntryActivity类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHandler &#123;</span><br><span class="line"></span><br><span class="line">    private static final String TAG = &quot;WXEntryActivity&quot;;</span><br><span class="line">    private String wechatAppID = &quot;wxd38bb2e01fee8e55&quot;;</span><br><span class="line">    private String wechatAppSecret = &quot;wxd38bb2e01fee8e55&quot;;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        IWXAPI api = WXAPIFactory.createWXAPI(this, wechatAppID, true);</span><br><span class="line">        api.handleIntent(getIntent(), this);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onReq(BaseReq req) &#123;</span><br><span class="line">        Log.i(TAG, &quot;onReq...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onResp(BaseResp resp) &#123;</span><br><span class="line">        Log.i(TAG, &quot;onResp: &quot; + resp);</span><br><span class="line">        String code = null;</span><br><span class="line">        switch (resp.errCode) &#123;</span><br><span class="line">            case BaseResp.ErrCode.ERR_OK:// 用户同意,只有这种情况的时候code是有效的</span><br><span class="line">                code = ((SendAuth.Resp) resp).code;</span><br><span class="line">                Log.i(&quot;Apptest&quot;, code);</span><br><span class="line">                try &#123;</span><br><span class="line">                    requesUserInfo(code);</span><br><span class="line">                &#125; catch (Exception e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            case BaseResp.ErrCode.ERR_AUTH_DENIED:// 用户拒绝授权</span><br><span class="line">                Log.i(&quot;Apptest&quot;, &quot;用户拒绝授权&quot;);</span><br><span class="line">                break;</span><br><span class="line">            case BaseResp.ErrCode.ERR_USER_CANCEL:// 用户取消</span><br><span class="line">                Log.i(&quot;Apptest&quot;, &quot;用户取消&quot;);</span><br><span class="line">                break;</span><br><span class="line"></span><br><span class="line">            default:// 发送返回</span><br><span class="line"></span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">        finish();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void requesUserInfo(final String code) &#123;</span><br><span class="line">        final String path = &quot;https://api.weixin.qq.com/sns/oauth2/access_token?appid=&quot; + wechatAppID</span><br><span class="line">                + &quot;&amp;secret=&quot; + wechatAppSecret + &quot;&amp;code=&quot; + code</span><br><span class="line">                + &quot;&amp;grant_type=authorization_code&quot;;</span><br><span class="line">        final android.os.Handler handler = new android.os.Handler() &#123;</span><br><span class="line">            public void handleMessage(Message msg) &#123;</span><br><span class="line">                super.handleMessage(msg);</span><br><span class="line">                Bundle b = msg.getData();</span><br><span class="line">                String newsTemp = b.getString(&quot;msg&quot;);</span><br><span class="line">                Toast.makeText(WXEntryActivity.this, &quot;微信登录成功-----&quot; + newsTemp, Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        new Thread(new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                BufferedReader br = null;</span><br><span class="line">                try &#123;</span><br><span class="line">                    URL url = new URL(path);</span><br><span class="line">                    HttpURLConnection httpconn = (HttpURLConnection) url.openConnection();</span><br><span class="line">                    httpconn.setRequestProperty(&quot;accept&quot;, &quot;*/*&quot;);</span><br><span class="line">                    httpconn.setDoInput(true);</span><br><span class="line">                    httpconn.setDoOutput(true);</span><br><span class="line">                    httpconn.setConnectTimeout(5000);</span><br><span class="line">                    httpconn.connect();</span><br><span class="line">                    int stat = 200;</span><br><span class="line">                    String msg = &quot;&quot;;</span><br><span class="line">                    if (stat == 200) &#123;</span><br><span class="line">                        br = new BufferedReader(new InputStreamReader(httpconn.getInputStream()));</span><br><span class="line">                        msg = br.readLine();</span><br><span class="line">                        Bundle b = new Bundle();</span><br><span class="line">                        b.putString(&quot;msg&quot;, msg);</span><br><span class="line">                        Message m = new Message();</span><br><span class="line">                        m.setData(b);</span><br><span class="line">                        handler.sendMessage(m);</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        msg = &quot;请求失败&quot;;</span><br><span class="line">                        Log.i(TAG, msg);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; catch (MalformedURLException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; catch (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; finally &#123;</span><br><span class="line">                    if (br != null) &#123;</span><br><span class="line">                        try &#123;</span><br><span class="line">                            br.close();</span><br><span class="line">                        &#125; catch (IOException e) &#123;</span><br><span class="line">                            e.printStackTrace();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>        并在manifest文件里面加上exported属性，设置为true,并且添加权限支持</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.ACCESS_WIFI_STATE&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.READ_PHONE_STATE&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;/&gt;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&lt;activity</span><br><span class="line">            android:name=&quot;.wxapi.WXEntryActivity&quot;</span><br><span class="line">            android:exported=&quot;true&quot;</span><br><span class="line">            android:label=&quot;@string/app_name&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>        然后在登录界面实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 获取IWXAPI 实例</span><br><span class="line">mIwxapi = WXAPIFactory.createWXAPI(MainActivity.this, wechatAppID, false);</span><br><span class="line">// 将应用的APPID 注册到微信</span><br><span class="line">mIwxapi.registerApp(wechatAppID);</span><br><span class="line">// 发送登录请求</span><br><span class="line">SendAuth.Req req = new SendAuth.Req();</span><br><span class="line">req.scope = &quot;snsapi_userinfo&quot;;</span><br><span class="line">req.state = &quot;wechat_sdk_test&quot;;</span><br><span class="line">mIwxapi.sendReq(req);</span><br></pre></td></tr></table></figure>
+<p>##FaceBook 登录<br>
+        因为大陆不能访问外国网站的原因，所以Facebook 的登录需要翻墙，这里默认大家都能成功翻墙，点击进入<a href="https://developers.facebook.com/" target="_blank" rel="noopener">Facebook for developers</a>,注册一个Facebook开发者账号。然后点击我的应用，选择添加新应用。在应用控制界面点击产品模块，添加Facebook 登录模块，点击快速启动创建Android应用。在创建的过程中，根据教程实现第三方登录，当第六步编辑完资源和清单文件后，执行下面的操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// 要获取的信息</span><br><span class="line">List&lt;String&gt; permissions = Arrays.asList(&quot;email&quot;, &quot;user_likes&quot;,</span><br><span class="line">            &quot;user_status&quot;, &quot;user_photos&quot;, &quot;user_birthday&quot;, &quot;public_profile&quot;, &quot;user_friends&quot;);</span><br><span class="line">// 创建 callbackManager，以便处理登录响应</span><br><span class="line">callbackManager = CallbackManager.Factory.create();</span><br><span class="line">LoginManager.getInstance().registerCallback(callbackManager,</span><br><span class="line">	new FacebookCallback&lt;LoginResult&gt;() &#123;</span><br><span class="line">	    @Override</span><br><span class="line">        public void onSuccess(LoginResult loginResult) &#123;</span><br><span class="line">	        Toast.makeText(MainActivity.this, &quot;Facebook 登录成功-----&quot; + loginResult.getAccessToken().toString(), Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">    public void onCancel() &#123;</span><br><span class="line">	    // App code</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onError(FacebookException exception) &#123;</span><br><span class="line">	    // App code</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//最后通过 callbackManager 将登录结果传递至 LoginManager。</span><br><span class="line"> @Override</span><br><span class="line">protected void onActivityResult(int requestCode, int resultCode, Intent data) &#123;</span><br><span class="line">	if (requestCode == 64206) &#123;</span><br><span class="line">		callbackManager.onActivityResult(requestCode, resultCode, data);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="twitter-登录">Twitter 登录</h2>
+<p>        因为大陆不能访问外国网站的原因，所以Twitter 的登录也需要翻墙，这里默认大家都能成功翻墙，点击进入<a href="https://developer.twitter.com/en/apps/" target="_blank" rel="noopener">Twitter移动开发</a>,注册一个Twitter开发者账号,Twitter 开发者这里是需要审核的。审核通过后创建一个应用，拿到应用的TWITTER_KEY 和 TWITTER_SECRET。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"> // 初始化Twitter</span><br><span class="line"> TwitterConfig config = new TwitterConfig.Builder(MainActivity.this)</span><br><span class="line">            .logger(new DefaultLogger(Log.DEBUG))</span><br><span class="line">            .twitterAuthConfig(new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET))</span><br><span class="line">            .debug(true)</span><br><span class="line">            .build();</span><br><span class="line">Twitter.initialize(config);</span><br><span class="line">// 获取twitter 的客户端</span><br><span class="line">twitterAuthClient = new TwitterAuthClient();</span><br><span class="line"></span><br><span class="line">twitterAuthClient.authorize(MainActivity.this, new Callback&lt;TwitterSession&gt;() &#123;</span><br><span class="line">	@Override</span><br><span class="line">    public void success(Result&lt;TwitterSession&gt; result) &#123;</span><br><span class="line">	    TwitterAuthToken authToken = result.data.getAuthToken();</span><br><span class="line">	        Toast.makeText(MainActivity.this, &quot;Twitter 登录成功-----&quot; + authToken, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">	public void failure(TwitterException exception) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//最后通过 twitterAuthClient 将登录结果返回。</span><br><span class="line">@Override</span><br><span class="line">protected void onActivityResult(int requestCode, int resultCode, Intent data) &#123;</span><br><span class="line">	if (requestCode == TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE) &#123;</span><br><span class="line">	    twitterAuthClient.onActivityResult(requestCode, resultCode, data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>        以上就是四个第三方平台第三方登录过程，具体的实现代码已提交到GitHub，点击查看<a href="https://github.com/smile-sxl/ThirdPartyLogin" target="_blank" rel="noopener">Android QQ，微信，Facebook和推特第三方登录</a>，欢迎fark,star。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/git/" data-toggle="tooltip" data-placement="top" title="Git 常用命令操作">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share" data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+           
+            <!-- 相关文章 -->
+            
+            
+
+    <div class="recommended_posts">
+        <h2><span style="font-size:1em">相关文章</span></h2>
+        <ul>
+            
+                <li><a href="http://www.xianleshen.com/article/bluetooth/">Android蓝牙mesh代码分析</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/http3/">Android 网络编程(三) 浅谈HttpURLConnection</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/http2/">Android 网络编程(二) HTTP协议解析</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/http/">Android 网络编程(一) 网络基本知识的了解</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/git/">Git 常用命令操作</a></li>
+            
+        </ul>
+    </div>
+
+
+
+                           
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#qq登录"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">QQ登录</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#twitter-登录"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Twitter 登录</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.csdn.net/javasxl" target="_blank">CSDN Blog 沈显乐</a></li>
+                    
+                        <li><a href="https://github.com/smile-sxl" target="_blank">github 沈显乐</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/smile-sxl">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; null 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.xianleshen.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.xianleshen.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

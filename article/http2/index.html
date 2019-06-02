@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Android 网络编程(二) HTTP协议解析 - 沈显乐
+        
+    </title>
+
+    <link rel="canonical" href="http://www.xianleshen.com/article/http2/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
+                            
+                        </div>
+                        <h1>Android 网络编程(二) HTTP协议解析</h1>
+                        <h2 class="subheading">HTTP协议解析</h2>
+                        <span class="meta">
+                            Posted by  on
+                            2018-09-22
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">沈显乐</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="引言">引言</h2>
+<p>  在日常的开发工作中，我们和服务器端进行通信一般都是基于HTTP 协议，HTTP协议同时也是互联网中最基础的网络协议。我们后面会讲到的一些优秀的开源库，比如说Volley，OKHttp以及Retroit 能够很方便的帮助我们进行Android网络编程的开发，这些库也都是基于HTTP 协议去实现的。</p>
+<h2 id="http-简介">HTTP 简介</h2>
+<h3 id="什么是httphttps-又是什么">什么是HTTP，HTTPS 又是什么？</h3>
+<p>  <strong>超文本传输协议</strong>（英文：<strong>H</strong>yper<strong>T</strong>ext <strong>T</strong>ransfer <strong>P</strong>rotocol，缩写：<strong>HTTP</strong>）是一种用于分布式、协作式和超媒体信息系统的应用层协议。HTTP是万维网的数据通信的基础。HTTP 协议是一个基于 TCP/IP 的应用层网络协议，它不涉及数据包的传输，<code>规定了客户端与服务器端的通信格式</code>。用于从万维网（WWW）服务器传输超文本到本地客户端。HTTP 从1991年发布0.9版开始，经过20多年的发展，不断完善和扩展。<br>
+  <strong>超文本传输安全协议</strong>（英语：<strong>H</strong>yper<strong>T</strong>ext <strong>T</strong>ransfer <strong>P</strong>rotocol <strong>S</strong>ecure，缩写：<strong>HTTPS</strong>，常称为HTTP over TLS，HTTP over SSL或HTTP Secure）是一种透过计算机网络进行安全通信的传输协议。<code>HTTPS经由HTTP进行通信，但利用SSL/TLS来加密数据包。</code>HTTPS开发的主要目的，是提供对网站服务器的身份认证，保护交换数据的隐私与完整性。这个协议由网景公司（Netscape）在1994年首次提出，随后扩展到互联网上。<br>
+  HTTP是明文传输，默认端口号是80，https是ssl加密的传输，身份认证的网络协议，默认端口号是443。在HTTP(应用层) 和TCP(传输层)之间插入一个SSL协议， 就是HTTPS。也可以这样概括：HTTP+加密+认证+完整性保护=HTTPS。所以，我们将下面主要讲述HTTP 协议的内容。</p>
+<h3 id="http-协议的特点">HTTP 协议的特点</h3>
+<ol>
+<li>支持C/S(客户端/服务器)模式</li>
+<li>简单快速：客户向服务器请求服务时，只需传送请求方法和路径。请求方法常用的有GET、HEAD、POST，每种方法规定了客户与服务器联系的类型不同。由于HTTP协议简单，使得HTTP服务器的程序规模小，因而通信速度很快。</li>
+<li>灵活：HTTP允许传输任意类型的数据对象。正在传输的类型由Content-Type加以标记。</li>
+<li>无连接：无连接的含义是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接。采用这种方式可以节省传输时间。</li>
+<li>无状态：HTTP协议是无状态协议，无状态是指协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传，这样可能导致每次连接传送的数据量增大。另一方面，在服务器不需要先前信息时它的应答就较快。</li>
+</ol>
+<h3 id="http-url-格式">HTTP URL 格式</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://host[&quot;:&quot;port][abs_path]</span><br></pre></td></tr></table></figure>
+<p>  http 表示使用 HTTP 协议来发送网络请求；host 表示合法的 Internet 主机域名或者IP地址；port 表示端口号，HTTP 协议默认使用 80 端口，也可以另外指定；abs_path 表示指定的 Web 服务器上可用资源的 URI。</p>
+<h2 id="http的报文">HTTP的报文</h2>
+<p>   HTTP报文是在HTTP应用程序之间发送的数据块。这些数据块以一些文本形式的元信息开头，这些信息描述了报文的内容及含义，后面跟着可选的数据部分。HTTP 协议中的报文，包含两种类型，请求报文和响应报文，分别对应客户端向服务器发送请求以及服务器响应请求这两个过程。</p>
+<h3 id="请求报文">请求报文</h3>
+<p><img src="https://img-blog.csdn.net/20180922152748402" alt="在这里插入图片描述"><br>
+   通常来说一个HTTP请求报文由<strong>请求行、请求报头、空行、和请求数据</strong>4个部分组成。<br>
+   比如说下面这个百度登录账号的请求报文:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">POST /v2/api/?login HTTP/1.1                                </span><br><span class="line">Host: passport.baidu.com</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Length: 1190</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Origin: https://www.baidu.com</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</span><br><span class="line">Referer: https://www.baidu.com/</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9</span><br><span class="line">Cookie: HOSUPPORT=1; USERNAMETYPE=3; SAVEUSERID=b566d81871d56eeb18c80c662ea85c; Hm_lvt_90056b3f84f90da57dc0f40150f005d5=1532941064; HISTORY=39a4fd197fced1666d6978e1cb19ad1b140957; BAIDUID=DA60AEA49FA1DD6840BE2312039F50EC:FG=1; PSTM=1537201293; BIDUPSID=8FFCFEFA0567CBC8F1B6222A30D2AA7D; PSINO=2; BDRCVFR[feWj1Vr5u3D]=I67x6TjHwwYf0; pgv_pvi=4792869888; pgv_si=s5375552512; ZD_ENTRY=google; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; BDRCVFR[4Zjqyl1bxbt]=aeXf-1x8UdYcs; H_PS_PSSID=; UBI=fi_PncwhpxZ%7ETaNj4eZlyAur7XT6G26Ok4TrsxfTmOrKsDt-Z%7EBUOsU8aTCsLjDnHuoWlSLmFAeV8oRrnpuAFam2MPBR7Q%7Eo09ZZHLViaGfHpwUXqsyzpvlFeNoi2R08qKXpyTiTxu9hmG9zqphuRmfz3vw</span><br><span class="line"></span><br><span class="line">staticpage=https%3A%2F%2Fwww.baidu.com%2Fcache%2Fuser%2Fhtml%2Fv3Jump.html&amp;charset=UTF-8&amp;token=ca0f35b4ebc6f9fc036a557b6136d593&amp;tpl=mn&amp;subpro=&amp;apiver=v3&amp;tt=1537601390986&amp;codestring=&amp;safeflg=0&amp;u=https%3A%2F%2Fwww.baidu.com%2F&amp;isPhone=false&amp;detect=1&amp;gid=86A55B0-569C-4AD3-A17E-5E2678283A08&amp;quick_user=0&amp;logintype=dialogLogin&amp;logLoginType=pc_loginDialog&amp;idc=&amp;loginmerge=true&amp;splogin=rate&amp;username=18168382659&amp;password=IGuAFtAX9q2%2BynuKoYTjF5XwKnsNmbHO9WfYyRNfcNDUloO8hcS%2BQmF0EUeh8bD5Vrjz895rTzpkCNpsUwSbBP4X9i1Z%2FcLqpRvDcFrdPLfaSehkvoMwOfoQ0OEWYCQVPBD3u%2FxW6bV4Fjr3FsOkZp3ixMGA2cBKtzCepOKGuAA%3D&amp;mem_pass=on&amp;rsakey=QUMyL7s03UXcPdL59MCVlAonrroBSGqt&amp;crypttype=12&amp;ppui_logintime=15606&amp;countrycode=&amp;fp_uid=&amp;fp_info=&amp;loginversion=v4&amp;dv=tk0.242393730115254781537601376012%40UUev9kqTEo0DFU7hAEjQu0n6B-oyBUjyJBn-OxjesmyU21qbQq__qe0TUDkux9k2zn5yz2kRy9pyx2-oTnA6U9kvyDkoTQkJ%7En5yd2kVT2-JdDmzu6ubpuV0nBUj6uUhQ2AhQBxsWNXUlnA6e9k6zDmyxDAoU90FhAVO56uUQBUhAu0lz20jQsXjeLBy_yttC-tERjPSLhEei2eye9kJbzevO4Ty91vd212b2-N-2koznAvUnkNi2Au-n-Jy2A2%7En1qz2R__iedCpFdNp2M9ej%7EO%7ENaJX0SspuaJxjZ9ezULXF3sX3asH6_Hev2myy9kodnkqTn-Vy9kodnkqTDAqy9kodnkqT2A6d2myb2kq_&amp;traceid=78B9A101&amp;callback=parent.bd__pcbs__i7kn49</span><br></pre></td></tr></table></figure>
+<h4 id="请求行">请求行</h4>
+<p>  请求行由请求方法，URL字段和HTTP协议的版本组成，格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Method Request-URI HTTP-Version CRLF</span><br></pre></td></tr></table></figure>
+<p>  其中 Method表示请求方法；Request-URI是一个统一资源标识符；HTTP-Version表示请求的HTTP协议版本；CRLF表示回车和换行（除了作为结尾的CRLF外，不允许出现单独的CR或LF字符）。例如上面登录百度账号的请求行就是:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST /v2/api/?login HTTP/1.1</span><br></pre></td></tr></table></figure>
+<p>  HTTP请求方法有8种，分别是GET、POST、DELETE、PUT、HEAD、TRACE、CONNECT 、OPTIONS。其中PUT、DELETE、POST、GET分别对应着增删改查，对于移动开发最常用的就是POST和GET了。</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>GET</td>
+<td>请求获取Request-URI所标识的资源</td>
+</tr>
+<tr>
+<td>2</td>
+<td>POST</td>
+<td>在Request-URI所标识的资源后附加新的数据</td>
+</tr>
+<tr>
+<td>3</td>
+<td>HEAD</td>
+<td>请求获取由Request-URI所标识的资源的响应消息报头</td>
+</tr>
+<tr>
+<td>4</td>
+<td>PUT</td>
+<td>请求服务器存储一个资源，并用Request-URI作为其标识</td>
+</tr>
+<tr>
+<td>5</td>
+<td>DELETE</td>
+<td>请求服务器删除Request-URI所标识的资源</td>
+</tr>
+<tr>
+<td>6</td>
+<td>TRACE</td>
+<td>请求服务器回送收到的请求信息，主要用于测试或诊断</td>
+</tr>
+<tr>
+<td>7</td>
+<td>CONNECT</td>
+<td>HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器</td>
+</tr>
+<tr>
+<td>8</td>
+<td>OPTIONS</td>
+<td>请求查询服务器的性能，或者查询与资源相关的选项和需求</td>
+</tr>
+</tbody>
+</table>
+<h4 id="请求报头">请求报头</h4>
+<p>  请求行之后会有 0 个或多个请求报头，如果有请求报头，则每行有 1 个请求头，都是以键值对的形式表示，包括头部域的名字和值，中间用 “：” 分隔。</p>
+<table>
+<thead>
+<tr>
+<th>请求头</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Host</td>
+<td>请求的主机名，允许多个域名同处一个IP地址，即虚拟主机</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>发送请求的浏览器类型、操作系统等信息</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td>客户端可识别的内容类型列表，用于指定客户端接收那些类型的信息</td>
+</tr>
+<tr>
+<td>Accept-Charset</td>
+<td>客户端可识别的字符集</td>
+</tr>
+<tr>
+<td>Accept-Encoding</td>
+<td>客户端可识别的数据编码</td>
+</tr>
+<tr>
+<td>Accept-Language</td>
+<td>表示浏览器所支持的语言类型</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>允许客户端和服务器指定与请求/响应连接有关的选项，例如这是为Keep-Alive则表示保持连接。</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>HTTP请求发送时，会把保存在该请求域名下的所有cookie值一起发送给web服务器。</td>
+</tr>
+<tr>
+<td>Transfer-Encoding</td>
+<td>告知接收端为了保证报文的可靠传输，对报文采用了什么编码方式</td>
+</tr>
+</tbody>
+</table>
+<h4 id="请求数据">请求数据</h4>
+<p>  请求数据不在GET方法中使用，而是在POST方法中使用。POST方法适用于需要客户填写表单的场合，与请求数据相关的最常用的请求头是Content-Type和Content-Length。</p>
+<h3 id="响应保文">响应保文</h3>
+<p><img src="https://img-blog.csdn.net/20180922161544803" alt="在这里插入图片描述"><br>
+  HTTP的响应报文由<strong>状态行、消息报头、空行、响应正文</strong>组成,响应正文是服务器返回的资源的内容。<br>
+   比如说下面这个百度登录账号的响应报文:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Access-Control-Expose-Headers: Trace-ID</span><br><span class="line">Cache-Control: public</span><br><span class="line">Content-Encoding: gzip</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Date: Sat, 22 Sep 2018 07:29:51 GMT</span><br><span class="line">Expires: 0</span><br><span class="line">Last-Modified: Sat, 22 Sep 2018 07:29:50 7SepGMT</span><br><span class="line">P3p: CP=&quot; OTI DSP COR IVA OUR IND COM &quot;</span><br><span class="line">Pragma: public</span><br><span class="line">Server: Apache</span><br><span class="line">Set-Cookie: STOKEN=0e9fa59dc37b18eb2af4e550e3a64720a7ccfafe1c74264009873dcda1c20622; expires=Wed, 09-Dec-2026 07:29:51 GMT; path=/; domain=passport.baidu.com; secure; httponly</span><br></pre></td></tr></table></figure>
+<h4 id="状态行">状态行</h4>
+<p>  状态行格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HTTP-Version Status-Code Reason-Phrase CRLF</span><br></pre></td></tr></table></figure>
+<p>  其中，HTTP-Version表示服务器HTTP协议的版本；Status-Code表示服务器发回的响应状态代码；Reason-Phrase表示状态代码的文本描述。例如上面登录百度账号的状态行就是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br></pre></td></tr></table></figure>
+<p>  状态代码有三位数字组成，第一个数字定义了响应的类别，且有五种可能取值：</p>
+<table>
+<thead>
+<tr>
+<th>状态码类型范围</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100~199</td>
+<td>指示信息，表示请求已接收，继续处理</td>
+</tr>
+<tr>
+<td>200~299</td>
+<td>请求成功，表示请求已被成功接收、理解、接受</td>
+</tr>
+<tr>
+<td>300~399</td>
+<td>重定向，要完成请求必须进行更进一步的操作</td>
+</tr>
+<tr>
+<td>400~499</td>
+<td>客户端错误，请求有语法错误或请求无法实现</td>
+</tr>
+<tr>
+<td>500~599</td>
+<td>服务器端错误，服务器未能实现合法的请求</td>
+</tr>
+</tbody>
+</table>
+<p>  更多关于状态码的细节可以参见<a href="https://baike.baidu.com/item/HTTP%E7%8A%B6%E6%80%81%E7%A0%81" target="_blank" rel="noopener">HTTP状态码</a>,常见的状态码如下：</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>描述</th>
+<th>详解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+<td>客户端请求成功</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>客户端请求有语法错误，不能被服务器所理解</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>服务器收到请求，但是拒绝提供服务</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>服务器发生不可预期的错误</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Server Unavailable</td>
+<td>服务器当前不能处理客户端的请求，一段时间后可能恢复正常</td>
+</tr>
+</tbody>
+</table>
+<h4 id="响应报头">响应报头</h4>
+<p>  用于服务器传递自身信息的响应，常见的响应报头：</p>
+<table>
+<thead>
+<tr>
+<th>请求头</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Location</td>
+<td>用于重定向接受者到一个新的位置，常用在更换域名的时候</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>包含可服务器用来处理请求的系统信息，与User-Agent请求报头是相对应的</td>
+</tr>
+<tr>
+<td>WWW-Authenticate</td>
+<td>必须被包含在 401（未授权的）响应消息中，客户端收到 401 响应消息时候，并发送 Authorization 报头域请求服务器对其进行验证时，服务端响应报头就包含该报头域。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="消息报头">消息报头</h3>
+<p>  消息报头分为<strong>通用报头、请求报头、响应报头、实体报头</strong>等。消息头由键值对组成，每行一对，关键字和值用英文冒号“:”分隔。请求报头和实体报头上面解释了,下面主要讲下通用报头和实体报头.</p>
+<h4 id="通用报头">通用报头</h4>
+<p>  既可以出现在请求报头，也可以出现在响应报头中</p>
+<table>
+<thead>
+<tr>
+<th>请求头</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Date</td>
+<td>表示消息产生的日期和时间</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>允许发送指定连接的选项，例如指定连接是连续的，或者指定“close”选项，通知服务器，在响应完成后，关闭连接</td>
+</tr>
+<tr>
+<td>Cache-Control</td>
+<td>用于指定缓存指令，缓存指令是单向的（响应中出现的缓存指令在请求中未必会出现），且是独立的（一个消息的缓存指令不会影响另一个消息处理的缓存机制）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="实体报头">实体报头</h4>
+<p>  实体报头用来定于被传送资源的信息，既可以用于请求也可用于响应。请求和响应消息都可以传送一个实体，常见的实体报头为：</p>
+<table>
+<thead>
+<tr>
+<th>请求头</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>发送给接收者的实体正文的媒体类型</td>
+</tr>
+<tr>
+<td>Content-Lenght</td>
+<td>实体正文的长度</td>
+</tr>
+<tr>
+<td>Content-Language</td>
+<td>描述资源所用的自然语言，没有设置则该选项则认为实体内容将提供给所有的语言阅读</td>
+</tr>
+<tr>
+<td>Content-Encoding</td>
+<td>实体报头被用作媒体类型的修饰符，它的值指示了已经被应用到实体正文的附加内容的编码，因而要获得Content-Type报头域中所引用的媒体类型，必须采用相应的解码机制。度</td>
+</tr>
+<tr>
+<td>Expires</td>
+<td>实体报头给出响应过期的日期和时间</td>
+</tr>
+</tbody>
+</table>
+<h2 id="总结">总结</h2>
+<p>   以上内容就是HTTP 协议的解析了，下篇文章会写一下HttpClient与HttpURLConnection自己的理解。在文章的最后特别感谢以下两位作者的文章，他们分别是<a href="http://liuwangshu.cn/application/network/1-http.html" target="_blank" rel="noopener">刘望舒大神写的Android网络编程（一）HTTP协议原理</a>和<a href="https://github.com/BeesAndroid/BeesAndroid/blob/master/doc/%E5%AE%9E%E8%B7%B5%E7%AF%87/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/Android%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%9A%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA.md" target="_blank" rel="noopener">郭孝星大神写的Android网络编程：基础理论</a>。<br>
+   最后的最后，安利给大家两个网络抓包的软件，能够很轻易地查看网页或者手机请求网络的请求报文和响应报文，mac下推荐使用<code>Charles</code>,windows 下推荐使用<code>Fiddler</code>。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/http3/" data-toggle="tooltip" data-placement="top" title="Android 网络编程(三) 浅谈HttpURLConnection">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/http/" data-toggle="tooltip" data-placement="top" title="Android 网络编程(一) 网络基本知识的了解">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share" data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+           
+            <!-- 相关文章 -->
+            
+            
+
+    <div class="recommended_posts">
+        <h2><span style="font-size:1em">相关文章</span></h2>
+        <ul>
+            
+                <li><a href="http://www.xianleshen.com/article/bluetooth/">Android蓝牙mesh代码分析</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/http3/">Android 网络编程(三) 浅谈HttpURLConnection</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/http/">Android 网络编程(一) 网络基本知识的了解</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/git/">Git 常用命令操作</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/thridLogin/"> Android QQ、微信、Facebook和推特第三方登录</a></li>
+            
+        </ul>
+    </div>
+
+
+
+                           
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#引言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">引言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#http-简介"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HTTP 简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#什么是httphttps-又是什么"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">什么是HTTP，HTTPS 又是什么？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#http-协议的特点"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">HTTP 协议的特点</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#http-url-格式"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">HTTP URL 格式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#http的报文"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HTTP的报文</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#请求报文"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">请求报文</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#请求行"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">请求行</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#请求报头"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text">请求报头</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#请求数据"><span class="toc-nav-number">3.1.3.</span> <span class="toc-nav-text">请求数据</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#响应保文"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">响应保文</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#状态行"><span class="toc-nav-number">3.2.1.</span> <span class="toc-nav-text">状态行</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#响应报头"><span class="toc-nav-number">3.2.2.</span> <span class="toc-nav-text">响应报头</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#消息报头"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">消息报头</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#通用报头"><span class="toc-nav-number">3.3.1.</span> <span class="toc-nav-text">通用报头</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#实体报头"><span class="toc-nav-number">3.3.2.</span> <span class="toc-nav-text">实体报头</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">总结</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.csdn.net/javasxl" target="_blank">CSDN Blog 沈显乐</a></li>
+                    
+                        <li><a href="https://github.com/smile-sxl" target="_blank">github 沈显乐</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/smile-sxl">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; null 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.xianleshen.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.xianleshen.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
