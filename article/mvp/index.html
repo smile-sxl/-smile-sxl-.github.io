@@ -282,7 +282,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginPresenter</span> <span class="keyword">implements</span> <span class="title">LoginContract</span>.<span class="title">Presenter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LoginContract.View view;</span><br><span class="line">    <span class="keyword">private</span> LoginModel loginModel;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoginPresenter</span><span class="params">(LoginContract.View view)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.view = view;</span><br><span class="line">        loginModel=<span class="keyword">new</span> LoginModel();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 通知视图</span></span><br><span class="line">        view.onSuccess();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFail</span><span class="params">(String msg)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 通知视图</span></span><br><span class="line">        view.onFail(msg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 登录方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//将view中的参数获取出来。</span></span><br><span class="line">        String name = view.getName();</span><br><span class="line">        String psw = view.getPassWord();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 调用一下业务处理model层的登陆方法</span></span><br><span class="line">        loginModel.login(name,psw,<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="总结">总结：</h3>
 <p>以上就是对登录过程简单的一次MVP 模式的实现，具体代码已经上传到github，点击 <a href="https://github.com/smile-sxl/MVPModuleDemo" target="_blank" rel="noopener">MVPModuleDemo</a> 即可查看。其实MVP模式困难的地方就是要明确好各个位置各自负责的工作，具体的实现对号入座就可以了。</p>
-<div><h1 id="推荐文章由hexo文章推荐插件驱动">推荐文章<span style="font-size:0.45em; color:gray">（由<a href="https://github.com/huiwang/hexo-recommended-posts">hexo文章推荐插件</a>驱动）</span></h1><ul><li><a href="http://www.xianleshen.com/article/bluetooth/">Android蓝牙mesh代码分析</a></li><li><a href="http://www.xianleshen.com/article/hexo-theme-huweihuang/">[Hexo] Theme HuWeihuang</a></li><li><a href="http://www.xianleshen.com/article/hybrid/">Hybrid开发—WebView与js交互实现</a></li><li><a href="http://www.xianleshen.com/article/http/">Android 网络编程(一) 网络基本知识的了解</a></li></ul></div>
+<div>相关文章<ul><li><a href="http://www.xianleshen.com/article/bluetooth/">Android蓝牙mesh代码分析</a></li><li><a href="http://www.xianleshen.com/article/hexo-theme-huweihuang/">[Hexo] Theme HuWeihuang</a></li><li><a href="http://www.xianleshen.com/article/hybrid/">Hybrid开发—WebView与js交互实现</a></li><li><a href="http://www.xianleshen.com/article/http/">Android 网络编程(一) 网络基本知识的了解</a></li></ul></div>
                 
 
                 <hr>
@@ -335,31 +335,29 @@
                 
 
             </div>
+           
+            <!-- 相关文章 -->
             
-            <!--加载valine-->
             
-    <div class="vcomment"></div>
-    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
-    <script>
-        new Valine({
-            el: '.vcomment',
-            visitor: true,
-            appId: '[object Object]',
-            appKey: '[object Object]',
-            placeholder: 'ヾﾉ≧∀≦)o发表你的高见吧, 可以留下邮箱接收评论回复的提醒哦',
-            avatar: 'mm',
-            pageSize: 10,
-            meta: ['nick','mail'],
-            notify: true
-        })
-    </script>
 
-            <!--加载valine-->
+    <div class="recommended_posts">
+        <h2><span style="font-size:1em">相关文章</span></h2>
+        <ul>
+            
+                <li><a href="http://www.xianleshen.com/article/bluetooth/">Android蓝牙mesh代码分析</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/hexo-theme-huweihuang/">[Hexo] Theme HuWeihuang</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/hybrid/">Hybrid开发—WebView与js交互实现</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/http/">Android 网络编程(一) 网络基本知识的了解</a></li>
+            
+        </ul>
+    </div>
 
-            <!-- 相关文章 
+
+
                            
-            -->
             
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
@@ -370,9 +368,9 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#前言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#mvc-mvp和mvvm"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">MVC、MVP和MVVM</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一-mvc-mvp和mvvm-都分别是什么"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">一、MVC、MVP和MVVM 都分别是什么？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mvc模型model-视图view和控制器controller"><span class="toc-nav-number">2.1.1.</span> <span class="toc-nav-text">MVC：模型（Model）、视图（View）和控制器（Controller）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mvp-模型model-视图view和展示器presenter"><span class="toc-nav-number">2.1.2.</span> <span class="toc-nav-text">MVP:  模型（Model）、视图（View）和展示器（Presenter）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mvvm模型model-视图view和视图模型viewmodel"><span class="toc-nav-number">2.1.3.</span> <span class="toc-nav-text">MVVM：模型（Model）、视图（View）和视图模型（ViewModel）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二-个人建议在android中采用mvp"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">二、个人建议在Android中采用MVP</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#android快速生成mvp-模式代码"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Android快速生成MVP 模式代码</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#一-安装mvphelper插件"><span class="toc-nav-number">3.0.1.</span> <span class="toc-nav-text">一、安装MVPHelper插件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#二-使用mvphelper-快速创建mvp"><span class="toc-nav-number">3.0.2.</span> <span class="toc-nav-text">二、使用MVPHelper 快速创建MVP</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#三-根据生成的mvp目录结构去拆分登录这个过程"><span class="toc-nav-number">3.0.3.</span> <span class="toc-nav-text">三、根据生成的MVP目录结构去拆分登录这个过程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1-首先是界面xml布局"><span class="toc-nav-number">3.0.3.1.</span> <span class="toc-nav-text">1、首先是界面xml布局：</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-对mvp模型拆分逻辑实现logincontract-接口"><span class="toc-nav-number">3.0.3.2.</span> <span class="toc-nav-text">2、对MVP模型拆分逻辑，实现LoginContract 接口</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-对接口进行实现"><span class="toc-nav-number">3.0.3.3.</span> <span class="toc-nav-text">3、对接口进行实现</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">总结：</span></a></li></ol><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#推荐文章由hexo文章推荐插件驱动"><span class="toc-nav-number"></span> <span class="toc-nav-text">推荐文章（由hexo文章推荐插件驱动）</span></a>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#前言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#mvc-mvp和mvvm"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">MVC、MVP和MVVM</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一-mvc-mvp和mvvm-都分别是什么"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">一、MVC、MVP和MVVM 都分别是什么？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mvc模型model-视图view和控制器controller"><span class="toc-nav-number">2.1.1.</span> <span class="toc-nav-text">MVC：模型（Model）、视图（View）和控制器（Controller）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mvp-模型model-视图view和展示器presenter"><span class="toc-nav-number">2.1.2.</span> <span class="toc-nav-text">MVP:  模型（Model）、视图（View）和展示器（Presenter）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mvvm模型model-视图view和视图模型viewmodel"><span class="toc-nav-number">2.1.3.</span> <span class="toc-nav-text">MVVM：模型（Model）、视图（View）和视图模型（ViewModel）</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二-个人建议在android中采用mvp"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">二、个人建议在Android中采用MVP</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#android快速生成mvp-模式代码"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Android快速生成MVP 模式代码</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#一-安装mvphelper插件"><span class="toc-nav-number">3.0.1.</span> <span class="toc-nav-text">一、安装MVPHelper插件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#二-使用mvphelper-快速创建mvp"><span class="toc-nav-number">3.0.2.</span> <span class="toc-nav-text">二、使用MVPHelper 快速创建MVP</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#三-根据生成的mvp目录结构去拆分登录这个过程"><span class="toc-nav-number">3.0.3.</span> <span class="toc-nav-text">三、根据生成的MVP目录结构去拆分登录这个过程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1-首先是界面xml布局"><span class="toc-nav-number">3.0.3.1.</span> <span class="toc-nav-text">1、首先是界面xml布局：</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-对mvp模型拆分逻辑实现logincontract-接口"><span class="toc-nav-number">3.0.3.2.</span> <span class="toc-nav-text">2、对MVP模型拆分逻辑，实现LoginContract 接口</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-对接口进行实现"><span class="toc-nav-number">3.0.3.3.</span> <span class="toc-nav-text">3、对接口进行实现</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">总结：</span></a></li></ol>
         
-        </li></div>
+        </div>
       </aside>
     
 
