@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          沈显乐 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.xianleshen.com/article/Android 网络编程(一) 网络基本知识的了解/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1></h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 沈显乐 on
+                            2018-09-17
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">沈显乐</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="android-网络编程一-网络基本知识的了解">Android 网络编程(一) 网络基本知识的了解</h1>
+<h2 id="引言">引言</h2>
+<p>Android网络编程知识是Android开发过程中必不可少的内容，在网络开发的过程中，我们通常会用到像Volley、OkHttp、Retrofit这些高度封装好的框架，这使得我们的开发很便利但也屏蔽了相关的技术细节。而作为想要进一步的开发者来说，我们不但要会用，有时候更要理解其实现的原理，理解了后更能促进我们更好的使用这些框架。Ok，下面我们讲一讲网络的基本知识。</p>
+<h2 id="osi-七层网络模型">OSI 七层网络模型</h2>
+<p>为了使不同的厂家生产的计算机能够通信，以便能在更大的范围内建立计算机网络，国际标准化组织(ISO)在 1978 年提出了“开放系统互联参考模型”，即 OSI/RM 模型（Open System Interconnection/Reference Model）。他将计算机网络体系结构的通信协议划分为了七层,自下而上依次分别是:物理层、数据链路层、网络层、传输层、会话层、表示层、应用层。其中低四层完成数据传输，高三层面向用户。</p>
+<blockquote>
+<h4 id="物理层">物理层</h4>
+<p>物理层（Physical Layer）在局部局域网上传送数据帧（data frame），它负责管理计算机通信设备和网络媒体之间的互通。包括了针脚、电压、线缆规范、集线器、中继器、网卡、主机适配器等。</p>
+<h4 id="数据链路层">数据链路层</h4>
+<p>数据链路层（Data Link Layer）负责网络寻址、错误侦测和改错。当表头和表尾被加至数据包时，会形成帧。数据链表头（DLH）是包含了物理地址和错误侦测及改错的方法。数据链表尾（DLT）是一串指示数据包末端的字符串。例如以太网、无线局域网（Wi-Fi）和通用分组无线服务（GPRS）等。</p>
+<p>分为两个子层：逻辑链路控制（logic link control，LLC）子层和介质访问控制（media access control，MAC）子层。</p>
+<h4 id="网络层">网络层</h4>
+<p>网络层（Network Layer)  决定数据的路径选择和转寄，将网络表头（NH）加至数据包，以形成分组。网络表头包含了网络数据。例如:互联网协议（IP）等。</p>
+<h3 id="传输层">传输层</h3>
+<p>传输层（Transport Layer）把传输表头（TH）加至数据以形成数据包。传输表头包含了所使用的协议等发送信息。例如:传输控制协议（TCP）等。</p>
+<h3 id="会话层">会话层</h3>
+<p>会话层（Session Layer）负责在数据传输中设置和维护计算机网络中两台计算机之间的通信连接。</p>
+<h3 id="表达层">表达层</h3>
+<p>表达层（Presentation Layer）把数据转换为能与接收者的系统格式兼容并适合传输的格式。</p>
+<h3 id="应用层">应用层</h3>
+<p>应用层（Application Layer）提供为应用软件而设的接口，以设置与另一应用软件之间的通信。例如: HTTP，HTTPS，FTP，TELNET，SSH，SMTP，POP3等。</p>
+</blockquote>
+<h2 id="tcpip-四层模型">TCP/IP 四层模型</h2>
+<p>由于 OSI/RM 模型过于复杂难以实现，现实中广泛使用的是 TCP/IP 模型。TCP/IP 是一个协议集，是由 ARPA ( Advanced Research Projects Agency Network 高等研究计划署网络 ) 于 1977 到 1979 年推出的一种网络体系结构和协议规范。随着 Internet 的发展，TCP/IP 得到进一步的研究和推广，成为 Internet 上的 “通用模型”。</p>
+<p>TCP/IP 模型在 OSI 模型的基础上进行了简化，去掉了OSI参考模型中的会话层和表示层（这两层的功能被合并到应用层实现），同时将OSI参考模型中的数据链路层和物理层合并为主机到网络层。变成了四层，从下到上分别为：网络接口层、网络层、传输层、应用层。与 OSI 体系结构对比如下：</p>
+<table border="1" cellspacing="0" cellpadding="0"><tbody><tr><td valign="top">
+<p align="center"><strong>OSI七层模型</strong></p>
+</td>
+<td valign="top">
+<p align="center"><strong>TCP/IP 四层模型</strong></p>
+</td>
+<td valign="top">
+<p align="center"><strong>网络协议</strong></p>
+</td>
+</tr><tr><td valign="top">
+<p align="center">应用层</p>
+<p align="center">（Application）</p>
+</td>
+<td rowspan="3">
+<p align="center">应用层</p>
+</td>
+<td rowspan="3">
+<p align="center">HTTP（超文本传输协议）</p>
+<p align="center">HTTPS（超文本传输安全协议）</p>
+<p align="center">FTP（文件传输协议）</p>
+<p align="center">SMTP（简单邮件传输协议）</p>
+<p align="center">DNS（域名服务）</p>
+<p align="center">等等</p>
+</td>
+</tr><tr><td valign="top">
+<p align="center">表示层</p>
+<p align="center">（Presentation）</p>
+</td>
+</tr><tr><td>
+<p align="center">会话层</p>
+<p align="center">（Session）</p>
+</td>
+</tr><tr><td valign="top">
+<p align="center">传输层</p>
+<p align="center">（Transport）</p>
+</td>
+<td>
+<p align="center">传输层</p>
+</td>
+<td>
+<p align="center">TCP（传输控制协议）</p>
+<p align="center">UDP（用户数据报协议）</p>
+</td>
+</tr><tr><td>
+<p align="center">网络层</p>
+<p align="center">（Network）</p>
+</td>
+<td>
+<p align="center">网际互连层</p>
+</td>
+<td>
+<p align="center">IP（网际协议）</p>
+<p align="center">ICMP（网络控制消息协议）</p>
+<p align="center">IGMP（网络组管理协议）</p>
+</td>
+</tr><tr><td valign="top">
+<p align="center">数据链路层</p>
+<p align="center">（Data Link）</p>
+</td>
+<td rowspan="2">
+<p align="center">网络接口层</p>
+</td>
+<td rowspan="2">
+<p align="center">以太网</p>
+<p align="center">Wi-Fi</p>
+<p align="center">等等</p>
+</td>
+</tr><tr><td valign="top">
+<p align="center">物理层</p>
+<p align="center">（Physical）</p>
+</td>
+</tr></tbody></table>
+<h2 id="ip-协议">IP 协议</h2>
+<p><strong>网际协议</strong>（英语：<strong>I</strong>nternet <strong>P</strong>rotocol，缩写为<strong>IP</strong>），又译互联网协议，是用于分组交换数据网络的一种协议。</p>
+<p><code>IP</code>是在<code>TCP/IP</code>协议族中网络层的主要协议，任务仅仅是根据源主机和目的主机的地址来传送数据。为此目的，<code>IP</code>定义了寻址方法和数据报的封装结构。第一个架构的主要版本，现在称为<code>IPv4</code>，仍然是最主要的互联网协议，尽管世界各地正在积极部署<code>IPv6</code>。IP协议的作用在于把各种数据包准确无误的传递给对方，其中两个重要的条件是IP地址和MAC地址（Media Access Control Address）。由于IP地址是稀有资源，不可能每个人都拥有一个IP地址，所以我们通常的IP地址是路由器给我们生成的IP地址，路由器里面会记录我们的MAC地址。而MAC地址是全球唯一的，除去人为因素外不可能重复。举一个现实生活中的例子，IP地址就如同是我们居住小区的地址，而MAC地址就是我们住的那栋楼那个房间那个人。</p>
+<h2 id="tcp-协议">TCP 协议</h2>
+<p><strong>传输控制协议</strong>（英语：<strong>T</strong>ransmission <strong>C</strong>ontrol <strong>P</strong>rotocol，缩写为<strong>TCP</strong>）是一种面向连接的、可靠的、基于字节流的传输层通信协议。</p>
+<p>TCP 协议被认为是稳定的协议，因为它有以下特点：</p>
+<ul>
+<li>面向连接，“三次握手”</li>
+<li>双向通信</li>
+<li>保证数据按序发送，按序到达</li>
+<li>超时重传</li>
+</ul>
+<p>要使用 TCP 传输数据，必须先建立连接，传输完成后释放连接。分别对应常说的“三次握手”、“四次挥手”。</p>
+<h3 id="tcp-的三次握手与四次挥手">TCP 的三次握手与四次挥手</h3>
+<p>三次握手与四次分手的流程如下所示：</p>
+<p><img src="./http/TCP.jpeg" alt="TCP"></p>
+<h4 id="三次握手">三次握手</h4>
+<ul>
+<li>第一次握手：建立连接。客户端发送连接请求报文段，将SYN位置为1，Sequence Number为x；然后，客户端进入SYN_SEND状态，等待服务器的确认；</li>
+<li>第二次握手：服务器收到SYN报文段。服务器收到客户端的SYN报文段，需要对这个SYN报文段进行确认，设置Acknowledgment Number为x+1(Sequence Number+1)；同时，自己自己还要发送SYN请求信息，将SYN位置为1，Sequence Number为y；服务器端将上述所有信息放到一个报文段（即SYN+ACK报文段）中，一并发送给客户端，此时服务器进入SYN_RCVD状态；</li>
+<li>第三次握手：客户端收到服务器的SYN+ACK报文段。然后将ACK设置为y+1，向服务器发送ACK报文段，这个报文段发送完毕以后，客户端和服务器端都进入ESTABLISHED状态，完成TCP三次握手。</li>
+</ul>
+<p>当客户端和服务器通过三次握手建立了TCP连接后，当数据传输完毕，断开连接时就需要进行TCP的四次挥手。</p>
+<h4 id="四次挥手">四次挥手</h4>
+<p>TCP 协议中，在通信结束后，需要断开连接，这需要通过四次挥手，<strong>客户端或服务器均可主动发起，主动的一方先断开</strong>，这里以客户端先断开为例：</p>
+<ul>
+<li>第一次分手：客户端设置Seq和ACK，向服务器端发送一个FIN报文段；此时，客户端进入FIN_WAIT_1状态；客户端表示没有数据要发送给服务器端了；</li>
+<li>第二次分手：服务器端收到了客户端发送的FIN报文段，向主机1回一个ACK报文段，ACK为Sequence Number加1；客户端进入FIN_WAIT_2状态；服务器告诉客户端，我“同意”你的关闭请求；</li>
+<li>第三次分手：服务器向客户端发送FIN报文段，请求关闭连接，同时服务器进入LAST_ACK状态；服务器告诉客户端，我也没啥数据要发给你了，请求断开。</li>
+<li>第四次分手：客户端收到服务器发送的FIN报文段，向服务器发送ACK报文段，然后客户端进入TIME_WAIT状态；服务器收到客户端的ACK报文段以后，就关闭连接；此时，客户端等待2MSL后依然没有收到回复，则证明服务端已正常关闭，那好，客户端也可以关闭连接了。</li>
+</ul>
+<h4 id="为什么要进行三次握手">为什么要进行三次握手</h4>
+<p><strong>三次握手的目的是为了防止已失效的连接请求报文段突然又传送到了服务端，因而产生错误。</strong></p>
+<blockquote>
+<p>“已失效的连接请求报文段”的产生在这样一种情况下：client发出的第一个连接请求报文段并没有丢失，而是在某个网络结点长时间的滞留了，以致延误到连接释放以后的某个时间才到达server。本来这是一个早已失效的报文段。但server收到此失效的连接请求报文段后，就误认为是client再次发出的一个新的连接请求。于是就向client发出确认报文段，同意建立连接。假设不采用“三次握手”，那么只要server发出确认，新的连接就建立了。由于现在client并没有发出建立连接的请求，因此不会理睬server的确认，也不会向server发送数据。但server却以为新的运输连接已经建立，并一直等待client发来数据。这样，server的很多资源就白白浪费掉了。采用“三次握手”的办法可以防止上述现象发生。例如刚才那种情况，client不会向server的确认发出确认。server由于收不到确认，就知道client并没有要求建立连接。</p>
+</blockquote>
+<h4 id="为什么要进行四次挥手">为什么要进行四次挥手</h4>
+<p><strong>TCP 连接是全双工的，每一端都可以同时发送和接受数据，关闭的时候两端都要关闭各自两个方向的通道，总共相当于要关闭四个。</strong></p>
+<blockquote>
+<p>以客户端发起关闭为例</p>
+<p>1.服务器读通道关闭<br>
+​	2.客户端写通道关闭<br>
+​	3.客户端读通道关闭<br>
+​        4.服务器写通道关闭</p>
+</blockquote>
+<h4 id="客户端为什么要等待-2msl">客户端为什么要等待 2MSL？</h4>
+<p><strong>MSL（Maximum Segment Life），是 TCP 对 TCP Segment 生存时间的限制</strong></p>
+<p>客户端在发出确认服务端关闭的 ACK 后，它没有办法知道对方是否收到这个消息，于是需要等待一段时间，如果服务端没有收到关闭的消息后会重新发出 FIN 报文，这样客户端就知道自己上条消息丢了，需要再发一次；如果等待的这段时间没有在收到 FIN 的重发报文，说明它的确已经收到断开的消息并且已经断开了。</p>
+<p>这个等待时间至少是：客户端的 timeout + FIN 的传输时间，为了保证可靠，采用更加保守的等待时间 2MSL。</p>
+<h2 id="udp协议">UDP协议</h2>
+<p><strong>用户数据报协议</strong>（英语：<strong>U</strong>ser <strong>D</strong>atagram <strong>P</strong>rotocol，缩写为UDP），又称<strong>用户数据报文协议</strong>，是一个简单的面向数据报的传输层协议。</p>
+<p>UDP是一个不可靠的或者说无连接的协议，他有以下的特点：</p>
+<ul>
+<li>UDP 缺乏可靠性。UDP 本身不提供确认，序列号，超时重传等机制。UDP 数据报可能在网络中被复制，被重新排序。即 UDP 不保证数据报会到达其最终目的地，也不保证各个数据报的先后顺序，也不保证每个数据报只到达一次</li>
+<li>UDP 数据报是有长度的。每个 UDP 数据报都有长度，如果一个数据报正确地到达目的地，那么该数据报的长度将随数据一起传递给接收方。而 TCP 是一个字节流协议，没有任何（协议上的）记录边界。</li>
+<li>UDP 是无连接的。UDP 客户和服务器之前不必存在长期的关系。UDP 发送数据报之前也不需要经过握手创建连接的过程。</li>
+<li>UDP 支持多播和广播。</li>
+</ul>
+<p>UDP 协议没有 TCP 协议稳定，因为它不建立连接，也不按顺序发送，可能会出现丢包现象，使传输的数据出错。但是有得就有失，UDP 的效率更高，因为 UDP 头包含很少的字节，比 TCP 负载消耗少，同时也可以实现双向通信，不管消息送达的准确率，只负责无脑发送。UDP 服务于很多知名应用层协议，比如 NFS（网络文件系统）、SNMP（简单网络管理协议）。UDP 一般多用于 IP 电话、网络视频等容错率强的场景。</p>
+<h2 id="socket-套接字">Socket （套接字）</h2>
+<p><img src="./http/socket.jpg" alt="socket"></p>
+<p>Socket 作为应用层和传输层之间的桥梁，与之关系最大的两个协议就是传输层中的 TCP 和 UDP协议。</p>
+<p>Socket 是对 TCP/IP 协议族的一种封装，是应用层与TCP/IP协议族通信的中间软件抽象层。TCP或者UDP的报文中，除了数据本身还包含了包的信息，比如目的地址和端口，包的源地址和端口，以及其他附加校验信息。从设计模式的角度看来，Socket其实就是一个门面模式，它把复杂的TCP/IP协议族隐藏在Socket接口后面，对用户来说，一组简单的接口就是全部，让Socket去组织数据，以符合指定的协议。</p>
+<p>Socket 还可以认为是一种网络间不同计算机上的进程通信的一种方法，利用三元组（ip地址，协议，端口）就可以唯一标识网络中的进程，网络中的进程通信可以利用这个标志与其它进程进行交互。</p>
+<p>Socket 起源于 Unix ，Unix/Linux 基本哲学之一就是“一切皆文件”，都可以用“打开(open) –&gt; 读写(write/read) –&gt; 关闭(close)”模式来进行操作。因此 Socket 也被处理为一种特殊的文件。</p>
+<p><img src="./http/socket1.png" alt="socket1"></p>
+<p>如图所示，Socket 被称为“套接字”，它把复杂的 TCP/IP 协议簇隐藏在背后，为用户提供简单的客户端到服务端接口，让我们感觉这边输入数据，那边就直接收到了数据，像一个“管道”一样。</p>
+<h3 id="socket-的使用">Socket  的使用</h3>
+<p>Socket 的基本操作有以下几部分：</p>
+<ol>
+<li>连接远程机器</li>
+<li>发送数据</li>
+<li>接收数据</li>
+<li>关闭连接</li>
+<li>绑定端口</li>
+<li>监听到达数据</li>
+<li>在绑定的端口上接受来自远程机器的连接</li>
+</ol>
+<p>要实现客户端与服务端的通信，双方都需要实例化一个 Socket。</p>
+<p>在 Java 中，客户端可以实现上面的 1、2、3、4、，服务端实现 5、6、7.</p>
+<p><a href="http://Java.net" target="_blank" rel="noopener">Java.net</a> 中为我们提供了使用 TCP、UDP 通信的两种 Socket：</p>
+<ul>
+<li>ServerSocket：流套接字，TCP</li>
+<li>DatagramSocket：数据报套接字，UDP</li>
+</ul>
+<h3 id="使用-tcp-通信的-socket-流程">使用 TCP 通信的 Socket 流程</h3>
+<p>服务端：</p>
+<ol>
+<li>调用 <code>ServerSocket(int port)</code> 创建一个 ServerSocket，绑定到指定端口</li>
+<li>调用 <code>accept()</code> 监听连接请求，如果客户端请求连接则接受，返回通信套接字</li>
+<li>调用 Socket 类的 <code>getOutputStream()</code> 和 <code>getInputStream()</code> 获取输出和输入流，进行网络数据的收发</li>
+<li>关闭套接字</li>
+</ol>
+<p>客户端：</p>
+<ol>
+<li>调用 <code>Socket()</code> 创建一个流套接字，连接到服务端</li>
+<li>调用 Socket 类的 <code>getOutputStream()</code> 和 <code>getInputStream()</code> 获取输出和输入流，进行网络数据的收发</li>
+<li>关闭套接字</li>
+</ol>
+<h3 id="使用-udp-通信的-socket-流程">使用 UDP 通信的 Socket 流程</h3>
+<p>服务端：</p>
+<ol>
+<li>调用 <code>DatagramSocket(int port)</code> 创建一个数据报套接字，绑定到指定端口</li>
+<li>调用 <code>DatagramPacket(byte[] buf, int length)</code> 建立一个字节数组，以接受 UDP 包</li>
+<li>调用 <code>DatagramSocket</code> 的 <code>receive()</code> 接收 UDP 包</li>
+<li>调用 <code>DatagramSocket.send()</code> 发送 UDP 包</li>
+<li>关闭数据报套接字</li>
+</ol>
+<p>客户端：</p>
+<ol>
+<li>
+<p>调用 <code>DatagramSocket()</code> 创建一个数据报套接字</p>
+</li>
+<li>
+<p>调用 <code>DatagramPacket(byte buf[], int offset, int length,InetAddress address, int port)</code> 建立要发送的 UDP 包</p>
+</li>
+<li>
+<p>调用 <code>DatagramSocket</code> 的 <code>receive()</code> 接收 UDP 包</p>
+</li>
+<li>
+<p>调用 <code>DatagramSocket.send()</code> 发送 UDP 包</p>
+</li>
+<li>
+<p>关闭数据报套接字</p>
+</li>
+</ol>
+<h2 id="demo演示tcp-通信的-socket-实现跨进程聊天">Demo演示:TCP 通信的 Socket 实现跨进程聊天</h2>
+<h4 id="配置"><strong>配置</strong></h4>
+<p>首先我们来实现服务端，当然要使用Socket我们需要在AndroidManifest.xml声明如下的权限：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.INTERNET"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ACCESS_NETWORK_STATE"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们需要实现一个远程的Service来当作聊天程序的服务端，AndroidManifest.xml文件中配置service：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">service</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:name</span>=<span class="string">".SocketServerService"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:process</span>=<span class="string">":remote"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="实现service"><strong>实现Service</strong></h4>
+<p>接下来我们在Service启动时，在线程中建立TCP服务，我们监听的是8688端口，等待客户端连接，当客户端连接时就会生成Socket。通过每次创建的Socket就可以和不同的客户端通信了。当客户端断开连接时，服务端也会关闭Socket并结束结束通话线程。服务端首先会向客户端发送一条消息：“您好，我是服务端”，并接收客户端发来的消息，将收到的消息进行加工再返回给客户端。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SocketServerService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isServiceDestroy = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> Return the communication channel to the service.</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">"Not yet implemented"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> TcpServer()).start();</span><br><span class="line">        Log.d(<span class="string">"SocketServerServer"</span>, <span class="string">"服务端已onCreate: "</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">TcpServer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            ServerSocket serverSocket;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">//监听指定的端口</span></span><br><span class="line">                serverSocket = <span class="keyword">new</span> ServerSocket(SocketClientActivity.CODE_SOCKET_CONNECT);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (!isServiceDestroy) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">// 如果客户端请求连接则接受，返回通信套接字</span></span><br><span class="line">                    <span class="keyword">final</span> Socket client = serverSocket.accept();</span><br><span class="line">                    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                            <span class="keyword">try</span> &#123;</span><br><span class="line">                                <span class="comment">// 响应给客户端信息</span></span><br><span class="line">                                responseClient(client);</span><br><span class="line">                            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                                e.printStackTrace();</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;).start();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">responseClient</span><span class="params">(Socket client)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 获取输入流 用于接收客户端消息</span></span><br><span class="line">        BufferedReader in = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(client.getInputStream()));</span><br><span class="line">        <span class="comment">// 获取输出流 用于向客户端发送消息</span></span><br><span class="line">        PrintWriter out = <span class="keyword">new</span> PrintWriter(<span class="keyword">new</span> BufferedWriter(<span class="keyword">new</span> OutputStreamWriter(client.getOutputStream())),<span class="keyword">true</span>);</span><br><span class="line">        out.println(<span class="string">"服务端已连接"</span>);</span><br><span class="line">        <span class="keyword">while</span> (!isServiceDestroy) &#123;</span><br><span class="line">            String str = in.readLine();</span><br><span class="line">            Log.d(<span class="string">"SocketServerServer"</span>, <span class="string">"服务器收到的信息: "</span> + str);</span><br><span class="line">            <span class="keyword">if</span> (TextUtils.isEmpty(str)) &#123;</span><br><span class="line">                Log.d(<span class="string">"SocketServerServer"</span>, <span class="string">"服务器收到的信息为空，已断开连接 "</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 从客户端收到的消息加工再发送给客户端</span></span><br><span class="line">            out.println(<span class="string">"收到了客户端发来的消息------"</span> + str);</span><br><span class="line">        &#125;</span><br><span class="line">        in.close();</span><br><span class="line">        out.close();</span><br><span class="line">        client.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">        isServiceDestroy = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="实现聊天程序客户端"><strong>实现聊天程序客户端</strong></h3>
+<p>客户端activity_socket_client.xml 的布局文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/tv_message"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"400dp"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"50dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_alignParentBottom</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:orientation</span>=<span class="string">"horizontal"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">EditText</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/et_receive"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"0dp"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_weight</span>=<span class="string">"2"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/bt_send"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"0dp"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_weight</span>=<span class="string">"1"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:text</span>=<span class="string">"向服务器发消息"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>客户端Activity会在onCreate方法中启动服务端，并开启线程连接服务端Socket。为了确保能连接成功，采用了超时重连的策略，每次连接失败时都会重新建立连接。连接成功后，客户端会收到服务端发送的消息：“您好，我是服务端”，我们也可以在EditText输入字符并发送到服务端。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SocketClientActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CODE_SOCKET_CONNECT = <span class="number">8688</span>;</span><br><span class="line">    <span class="keyword">private</span> Button bt_send;</span><br><span class="line">    <span class="keyword">private</span> EditText et_receive;</span><br><span class="line">    <span class="keyword">private</span> PrintWriter mPrintWriter;</span><br><span class="line">    <span class="keyword">private</span> TextView tv_message;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(@Nullable Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_socket_client);</span><br><span class="line">        initView();</span><br><span class="line">        <span class="comment">// 开启服务端</span></span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, SocketServerService.class);</span><br><span class="line">        startService(intent);</span><br><span class="line">        <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="comment">// 连接到服务端</span></span><br><span class="line">                connectSocketServer();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        et_receive = (EditText) findViewById(R.id.et_receive);</span><br><span class="line">        bt_send = (Button) findViewById(R.id.bt_send);</span><br><span class="line">        tv_message = (TextView) <span class="keyword">this</span>.findViewById(R.id.tv_message);</span><br><span class="line">        bt_send.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">final</span> String msg = et_receive.getText().toString();</span><br><span class="line">                <span class="comment">//向服务器发送信息</span></span><br><span class="line">                <span class="keyword">if</span> (!TextUtils.isEmpty(msg) &amp;&amp; <span class="keyword">null</span> != mPrintWriter) &#123;</span><br><span class="line">                    mPrintWriter.println(msg);</span><br><span class="line">                    tv_message.setText(tv_message.getText() + <span class="string">"\n"</span> + getCurrentTime() + <span class="string">"\n"</span> + <span class="string">"客户端："</span> + msg);</span><br><span class="line">                    et_receive.setText(<span class="string">""</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">connectSocketServer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Socket socket = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span> (socket == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 一个流套接字，连接到服务端</span></span><br><span class="line">                socket = <span class="keyword">new</span> Socket(<span class="string">"localhost"</span>, CODE_SOCKET_CONNECT);</span><br><span class="line">                <span class="comment">// 获取到客户端的文本输出流</span></span><br><span class="line">                mPrintWriter = <span class="keyword">new</span> PrintWriter(<span class="keyword">new</span> BufferedWriter(<span class="keyword">new</span> OutputStreamWriter(socket.getOutputStream())),<span class="keyword">true</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">                SystemClock.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 接收服务端发送的消息</span></span><br><span class="line">            BufferedReader reader = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(socket.getInputStream()));</span><br><span class="line">            <span class="keyword">while</span> (!isFinishing()) &#123;</span><br><span class="line">                <span class="keyword">final</span> String str = reader.readLine();</span><br><span class="line">                <span class="keyword">if</span> (str != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    runOnUiThread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                        <span class="meta">@Override</span></span><br><span class="line">                        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                            tv_message.setText(tv_message.getText() + <span class="string">"\n"</span> + getCurrentTime() + <span class="string">"\n"</span> + <span class="string">"服务端："</span> + str);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            mPrintWriter.close();</span><br><span class="line">            reader.close();</span><br><span class="line">            socket.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getCurrentTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        SimpleDateFormat df = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);<span class="comment">//设置日期格式</span></span><br><span class="line">        <span class="keyword">return</span> df.format(<span class="keyword">new</span> Date());<span class="comment">// new Date()为获取当前系统时间</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后我们来看下效果图:</p>
+<p><img src="./http/demo.png" alt="demo"></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/MVP在Android中的实现/" data-toggle="tooltip" data-placement="top" title="">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/hexo-theme-huweihuang/" data-toggle="tooltip" data-placement="top" title="[Hexo] Theme HuWeihuang">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share" data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!--加载valine-->
+            
+    <div class="vcomment"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <script>
+        new Valine({
+            el: '.vcomment',
+            visitor: true,
+            appId: '[object Object]',
+            appKey: '[object Object]',
+            placeholder: 'ヾﾉ≧∀≦)o发表你的高见吧, 可以留下邮箱接收评论回复的提醒哦',
+            avatar: 'mm',
+            pageSize: 10,
+            meta: ['nick','mail'],
+            notify: true
+        })
+    </script>
+
+            <!--加载valine-->
+
+            <!-- 相关文章 -->
+            
+            
+            
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.csdn.net/javasxl" target="_blank">CSDN Blog 沈显乐</a></li>
+                    
+                        <li><a href="http://dockone.io/people/沈显乐" target="_blank">DockOne 沈显乐</a></li>
+                    
+                        <li><a href="https://yq.aliyun.com/u/javasxl" target="_blank">阿里云栖社区 沈显乐</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/huweihuang">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 沈显乐 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.xianleshen.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.xianleshen.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
