@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Android蓝牙mesh代码分析 - 沈显乐 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.xianleshen.com/article/bluetooth/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
+                            
+                        </div>
+                        <h1>Android蓝牙mesh代码分析</h1>
+                        <h2 class="subheading">Android Mesh</h2>
+                        <span class="meta">
+                            Posted by 沈显乐 on
+                            2018-10-21
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">沈显乐</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="mesh组网基本理解">Mesh组网基本理解</h2>
+<p>  蓝牙技术联盟写了<a href="https://mp.weixin.qq.com/s/KdVhkgcmHIboA0xPFqFCgQ" target="_blank" rel="noopener">解密蓝牙mesh系列</a>，一共10篇文章 讲述了蓝牙mesh理论内容以及整个流程 ，想要详细了解的可以点击查看。下面我们简单介绍下Mesh组网到底是什么：</p>
+<img src="./bluetooth/mesh1.png" style="zoom:65%">
+<p>  MESH是一种新型的<strong>无线网络架构</strong>，蓝牙Mesh组网内每台设备均通过<strong>低功耗蓝牙</strong>无线连接进行通信，而这些设备被称之为<strong>节点</strong>。每个节点都能<strong>发送和接收消息</strong>，消息能够在节点之间被<strong>中继</strong>，从而让消息传输至比无线电波正常传输距离更远的位置。归结成一句话：蓝牙Mesh组网 就是一种在同一个网络内任意蓝牙设备都进行数据交互的技术。这样的话，APP 只要能发现组网内的任何一台设备，就能由设备发现组网内的其他Mesh设备，并和任何一台设备建立连接并控制。</p>
+<hr>
+<p>  其实，我对蓝牙Mesh 的组网也仅仅限于上面的理解。作为一个Android 开发人员，我更关注的是Android 代码到底如何去实现蓝牙设备的组网。在网上也找到了一些项目和代码，仔细研究了下也是很迷茫。后来找到了泰凌微提供的蓝牙Mesh灯项目以及开放的Mesh 组网流程的源码，才真正的算是实现了Android 组网。我将这个资料上传到了<a href="https://pan.baidu.com/s/1HU5-tn-7P5cZMN1Q88Db3A" target="_blank" rel="noopener">百度网盘</a> ，提取码是<strong>6i57</strong>。也上传到了<a href="https://download.csdn.net/download/javasxl/10735030" target="_blank" rel="noopener">CSDN资源</a>，点击即可下载，里面有一个Android Mesh组网的项目及具体源码、SDK开发手册以及加密手册。当然，这些资源当前⽬目录下也有保存,可以放心查看。</p>
+<h2 id="扫描设备">扫描设备</h2>
+<p>  因为下面的分析是基于上面项目的代码去分析的，所以需要你们下载下来项目跑起来。<br>
+  无论是连接已经完成组网设备还是将一个待组网设备进行组网，APP 做的第一步永远是扫描，扫描到所有的蓝牙设备，然后拿到指定的Mesh组网的设备进行组网操作。下面是代码分析：</p>
+<blockquote>
+<p>在扫描界面执行:    <strong>startScan(params)</strong>   启动扫描,然后会执行一个循环任务<strong>EventLoopTask</strong>,在循环任务中每200毫秒查询一次状态,然后 <strong>startLeScan()</strong> 方法中判断设备是否正在扫描,如果没有,则在<strong>LeBluetooth</strong>类中开启扫描<strong>startScan()</strong>。<br>
+在注册<strong>TelinkLightService</strong>的时候,会创建一个<strong>LightAdapter</strong>并启动,会设置设备的扫描结果回调<strong>setLeScanCallback(LeScanCallback callback)</strong>,然后当上面的扫描开启后,会将扫描得到的设备返回的这个回调中的<strong>onLeScan()<strong>方法中.在这个方法中,会先对设备本身返回的信息进行处理和判断,符合标准的设备返回到在扫描界面设置监听的</strong>performed</strong>方法中的,然后执行<strong>onLeScan()</strong>,扫描这一步就完成了。<br>
+扫描完拿到三个信息  <strong>device</strong>   <strong>rssi</strong> 以及<strong>scanRecord</strong> 。蓝牙设备的地址可以根据<strong>device.getAddress()<strong>直接获取   比如说我拿到的灯设备 scanRecord 的数据如下：<br>
+02:01:05:05:09:4D:65:73:68:09:FF:11:02:11:02:35:43:68:38:1E:FF:11:02:11:02:35:43:68:38:21:43:01:35:00:10:19:44:45:4C:20:68:73:65:4D:20:47:53:54:42:4A:00:00:00:00:00:00:00:00:00:00:00:00<br>
+在</strong>DefaultAdvertiseDataFilter</strong>类中可以看到 有<strong>meshName</strong>，<strong>meshAddress</strong>，<strong>meshUUID</strong>，<strong>productUUID</strong>，<strong>status</strong>等数据。很明显我们可以根据这些数据分析当前设备在哪个mesh 下，地址又是什么。</p>
+</blockquote>
+<p>  <strong>总结：执行SDK提供的开始扫描接口startScan()的时候，可以从设备发现的回调中拿到具体的蓝牙设备和广播。mac 地址和设备名称等信息可以从设备中拿到，而设备所属的Mesh 组网名称、设备的MeshAddress(设备在组网内的唯一标识，通讯地址）等信息可以在广播中获取到。其中productUUID是指的产品类型，可以在设备中自定义这个类型。而meshUUID则是厂商默认设置的值,至于status 这个值是厂商的预留值,也是可以在设备中自定义的信息，总的来说，在这个APP 的代码中，并没有实际用到这三个参数。</strong></p>
+<h2 id="组网">组网</h2>
+<h3 id="meshaddress">meshAddress</h3>
+<p>   在<strong>onLeScan()</strong> 方法里，会调用一个<strong>mesh.getDeviceAddress()</strong> 的方法，这个方法很重要，这里面拿到的<strong>meshAddress</strong>就是后面要修改新加入组网设备的<strong>meshAddress</strong>，他在后面会被设为<strong>newMeshAddress</strong>然后保存下来。因为在蓝牙mesh组网下，<strong>meshAddress</strong>是用来确定设备的，他在这个组网内是唯一固定的。那这个方法实现的逻辑是怎样的呢？比如说要加入一个新设备要加入当前的组网，不管他原先的<strong>meshAddress</strong>是多少 ，只看我当前组网下的<strong>meshAddress</strong>。比如说有两个设备，地址分别是 <strong>1、3</strong>，在这个方法里，会遍历<strong>1-254</strong>的值，然后就会返回一个<strong>2</strong> ，这个<strong>2</strong>就是要设置的新<strong>meshAddress</strong>。<strong>meshAddress</strong>的范围就是<strong>1-254</strong>，当然了你也可以修改这个范围。</p>
+<h3 id="添加与重连">添加与重连</h3>
+<p>  组网的时候,SDK提供了两个接口,一个是添加新的设备进行组网,调用的是<strong>TelinkLightService.Instance().updateMesh(params);<strong>更新接口,这个接口能够更改设备本身出厂时的参数</strong>meshName</strong>、<strong>password</strong>、<strong>ltk</strong>三个信息,这三个信息修改成功， 就标志着设备已经组⽹网成功，将设备成功加入到新的组网下。另一个是如果当前设备的<strong>meshName</strong>,<strong>password</strong>是你要组⽹网的名称,可以执⾏**TelinkLightService.Instance().autoConnect(connectParams);**自动重连接口，直接把APP 跟设备连接起来。</p>
+<h3 id="uuid">UUID</h3>
+<p>  在组网之前，我们需要知道<strong>UUID</strong>。<strong>UUID</strong>是根据一定算法，计算得到的一长串数字，这个数字的产生使用了多种元素，所以使得这串数字不会重复，每次生成都会产生不一样的序列，所以可以用来作为唯一标识。<br>
+  在蓝牙协议中，<strong>UUID</strong>被用来标识蓝牙设备所提供的服务，并非是标识蓝牙设备本身哦，一个蓝牙设备可以提供多种服务，比如<strong>A2DP</strong>（蓝牙音频传输）、<strong>HEADFREE</strong>（免提）、<strong>PBAP</strong>(电话本)、<strong>SPP</strong>(串口通信)等等，每种服务都对应一个<strong>UUID</strong>，其中在蓝牙协议栈里，这些默认提供的<strong>profile</strong>是都有对应的<strong>UUID</strong>的，也就是默认的<strong>UUID</strong>，比如<strong>SPP</strong>，<strong>00001101-0000-1000-8000-00805F9B34FB</strong>就是一个非常 well-known的<strong>UUID</strong>，基本上所有的蓝牙板不修改的话都是这个值。但是，不同的设备也不同的<strong>UUID</strong>，如果是与一个蓝牙开发板进行通信，需要APP 和 蓝牙设备的<strong>UUID</strong> 保持一致。而APP代码中的<strong>UuidInformation</strong>类里面就可以设置你要控制的低功耗蓝牙设备的<strong>UUID</strong>。一般都要修改<strong>服务</strong>、<strong>状态通知</strong>、<strong>控制</strong>、<strong>OTA</strong>、<strong>加密</strong>这五个<strong>UUID</strong>。下面进行的登录，修改参数、控制设备等等操作都需要<strong>UUID</strong> 的验证。</p>
+<p>  下面我们主要讲一下更新接口的实现，其实自动重连接口就是比更新接口少了修改设备信息这一步。</p>
+<h3 id="连接">连接</h3>
+<p>   发现设备后，拿到要组网的设备的本身的信息，然后就开始进行连接了。其实就是走的低功耗蓝牙设备的<strong>connectGatt(this, false, mGattCallback);</strong> 连接方法。</p>
+<blockquote>
+<p>更新参数执行<strong>updateMesh()<strong>⽅法来更新设备的</strong>meshName、password、ltk</strong>,也还是会执⾏行一个循环任务 <strong>EventLoopTask</strong>,在循环任务中每200毫秒查询一次状态,然后<strong>update()<strong>方法中进行</strong>connect()</strong>,然后在<strong>LightController</strong>类中执行<strong>connect()</strong>,最终会执行<strong>Peripheral</strong>类的<strong>connect()<strong>⽅法,然后通过此</strong>BluetoothDevice</strong>的<strong>connectGatt(this, false, mGattCallback)<strong>方法获取设备连接。⽆论当连接上设备或者失去连接时会回调</strong>onConnectionStateChange()</strong>,当连接成功后调用<strong>discoverServices</strong>函数尝试发现服务,当设备是否找到服务时，会回调<strong>onServicesDiscovered()<strong>函数,然后会在</strong>LightPeripheral</strong>类中的<strong>onServicesDiscovered()<strong>回调给</strong>LightController</strong>,最后发给 <strong>LightAdapter</strong>类<strong>CONNECT_SUCCESS</strong>. 连接成功后会执行登录的⽅法。</p>
+</blockquote>
+<h3 id="登录">登录</h3>
+<p>  登录的过程是一个比较复杂的过程，涉及到多次的加密验证。这个验证之间的过程就会用到我们上面说的<strong>服务特征值UUID</strong>以及<strong>加密特征值UUID</strong>。<br>
+  在<strong>LightAdapter</strong>类执行登录<strong>login</strong>的方法，最终的实现是在<strong>LightController</strong>类中的<strong>login</strong>方法.参考了<strong>BLE_LIGHT加密流程简介V1.9.pdf</strong>文档，登录校验的具体实现如下：</p>
+<blockquote>
+<ol>
+<li><strong>根据 meshName、password、randm 这 3 个参数生成一个 sk，然 后把 randm 和生成的 sk 的低 8 个 byte(校验用)一起发送给设备</strong></li>
+<li><strong>设备获取到发过来的 randm 并和 BLE Light 本身存储的 meshname 和 password 进行加密获取一个 sk,将生成的 sk 的低 8Byte 和 Master 发过来的 sk 进行比较，如果正确，则表示认证成功。</strong></li>
+<li><strong>设备也会随机生成8Byte的 rands、以及本地存储的 mesh name、password 这 3 个参数加密生成一个 sk，会把sk 和 rands 传给APP,然后在本地会根据 randm、rands、meshname、password 共同生成一个新的sk，后续的加密和解密都将使用刚刚生成的 sk。</strong></li>
+<li><strong>APP 拿到设备发过来的sk后会进行校验，校验成功后获取8Byte的 rands，并根据该 rands 和randm、mesh name、password共同生成一个 sk，此时，APP 和 设备 两边的 sk 都是一样的，也就可以进行正常的加密和解密，同时的，登录的过程也就完成了。</strong></li>
+</ol>
+</blockquote>
+<h3 id="修改信息">修改信息</h3>
+<p>  我上面说过，加新设备进行组网的过程就是修改<strong>meshName</strong>、<strong>password</strong>、<strong>ltk</strong>，这三个参数的过程。其实这么说也并不是特别准确，其实在修改这三个参数之前还需要对比<strong>meshAddress</strong>（就是扫描设备拿到的<strong>meshAddress</strong>）与上面保存的<strong>newMeshAddress</strong> 要不要修改,因为我们上面说过，因为在蓝牙mesh组网下，<strong>meshAddress</strong>是用来确定设备的，他在这个组网内是唯一固定的。修改成功后才能进行下面三个参数的修改，这三个参数修改完成就标志这新设备已经成功组网。<br>
+  上面我说到<strong>LTK</strong>，可能有的朋友不知道这个是什么东西，<strong>meshName</strong>、<strong>password</strong>都很好理解，是mesh 组网的名称和密码，而<strong>LTK</strong> 是节点之间的通信秘钥，只要<strong>LTK</strong>一致，同一个组网间的设备就能正常通信。但是在代码中<strong>updateMesh(params)<strong>方法中，我们并没有给</strong>LTK</strong>赋值，所以当我们设置的时候将使用厂商默认<strong>LTK</strong>值。如果要修改自定义的<strong>LTK</strong>,可以调用<strong>params.setLtk()</strong> 方法进行赋值。<br>
+  下面是代码分析：</p>
+<blockquote>
+<p>登录的<strong>sk</strong>校验会出现在<strong>LightController</strong>类的<strong>LoginCommandCallback</strong>里面，然后在<strong>LightAdapter</strong>里面的<strong>ConnectionListener()</strong> 返回一个登录成功或者失败的回调。登录成功后要修改<strong>meshName, password, ltk</strong>这三个信息，这三个信息就是组网的标志。修改的过程发生在<strong>LightController</strong>类的<strong>reset</strong>方法，会先判断设备的<strong>meshAddress</strong>要不要修改,如果要修改的话就先修改<strong>meshAddress</strong>,然后在<strong>onDeviceAddressNotify()<strong>方法里继续执行</strong>reset</strong>方法。通过加密的方法将这三个参数发送给设备，具体的加密过程也可以参照上面的<strong>BLE_LIGHT加密流程简介V1.9.pdf</strong> 文档去解析下，最后发发送了一个重新检查的命令，等待设备解密并修改完成发出的确认信息就完成了信息的修改。修改命令的回调都在<strong>ResetCommandCallback</strong>里，收到最后的<strong>TAG_RESET_MESH_CHECK</strong>的确认后，继续往下执行，会发出一个<strong>RESET_MESH_SUCCESS</strong>事件 ，然后在<strong>ResetMeshListener</strong>的回调里设置<strong>STATUS_UPDATE_MESH_COMPLETED</strong>，表明已完成信息更新，扫描到的这个设备组网完成，最后在扫描界面<strong>onDeviceStatusChanged</strong>的方法里面继续执行加灯操作，直到扫不到设备。</p>
+</blockquote>
+<h3 id="控制与接收设备数据">控制与接收设备数据</h3>
+<p>  控制与接收设备数据这里的代码就比较简单了，都有特定的方法去实现，唯一需要注意的一点就是发送数据的协议，一定要是当前设备的协议，否则无法进行控制。具体的实现可以参照下面的流程：</p>
+<img src="./bluetooth/mesh2.png" style="zoom:65%">
+<h2 id="总结">总结</h2>
+<p>  以上就是蓝牙Mesh 组网的整个流程了，下面引用一张我们ios 同事画的流程图理解一下：</p>
+<img src="./bluetooth/mesh3.png" style="zoom:65%">
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/mvp/" data-toggle="tooltip" data-placement="top" title=" Android快速生成MVP模式代码">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/http/" data-toggle="tooltip" data-placement="top" title="Android 网络编程(一) 网络基本知识的了解">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share" data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!--加载valine-->
+            
+    <div class="vcomment"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <script>
+        new Valine({
+            el: '.vcomment',
+            visitor: true,
+            appId: '[object Object]',
+            appKey: '[object Object]',
+            placeholder: 'ヾﾉ≧∀≦)o发表你的高见吧, 可以留下邮箱接收评论回复的提醒哦',
+            avatar: 'mm',
+            pageSize: 10,
+            meta: ['nick','mail'],
+            notify: true
+        })
+    </script>
+
+            <!--加载valine-->
+
+            <!-- 相关文章 -->
+            
+            
+            
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#mesh组网基本理解"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Mesh组网基本理解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#扫描设备"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">扫描设备</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#组网"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">组网</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#meshaddress"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">meshAddress</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#添加与重连"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">添加与重连</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#uuid"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">UUID</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#连接"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">连接</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#登录"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">登录</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#修改信息"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">修改信息</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#控制与接收设备数据"><span class="toc-nav-number">3.7.</span> <span class="toc-nav-text">控制与接收设备数据</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">总结</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.csdn.net/javasxl" target="_blank">CSDN Blog 沈显乐</a></li>
+                    
+                        <li><a href="http://dockone.io/people/沈显乐" target="_blank">DockOne 沈显乐</a></li>
+                    
+                        <li><a href="https://yq.aliyun.com/u/javasxl" target="_blank">阿里云栖社区 沈显乐</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/huweihuang">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 沈显乐 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="91px" height="20px" src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.xianleshen.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.xianleshen.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
