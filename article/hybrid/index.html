@@ -264,7 +264,7 @@
 <li>通过 <code>WebChromeClient</code> 的<code>onJsAlert()</code>、<code>onJsConfirm()</code>、<code>onJsPrompt（）</code>方法回调拦截JS对话框<code>alert()</code>、<code>confirm()</code>、<code>prompt（）</code> 消息</li>
 </ol>
 <p>以上就是对Android与js 直接交互实现的小Demo 的讲解，具体代码已经上传到github，点击 <a href="https://github.com/smile-sxl/WebViewDemo" target="_blank" rel="noopener">WebViewDemo</a> 即可查看。</p>
-<div>相关文章<ul><li><a href="http://www.xianleshen.com/article/bluetooth/">Android蓝牙mesh代码分析</a></li><li><a href="http://www.xianleshen.com/article/hexo-theme-huweihuang/">[Hexo] Theme HuWeihuang</a></li><li><a href="http://www.xianleshen.com/article/http/">Android 网络编程(一) 网络基本知识的了解</a></li><li><a href="http://www.xianleshen.com/article/mvp/"> Android快速生成MVP模式代码</a></li></ul></div>
+<div><h1 id="推荐文章由hexo文章推荐插件驱动">推荐文章<span style="font-size:0.45em; color:gray">（由<a href="https://github.com/huiwang/hexo-recommended-posts">hexo文章推荐插件</a>驱动）</span></h1><ul><li><a href="http://www.xianleshen.com/article/bluetooth/">Android蓝牙mesh代码分析</a></li><li><a href="http://www.xianleshen.com/article/hexo-theme-huweihuang/">[Hexo] Theme HuWeihuang</a></li><li><a href="http://www.xianleshen.com/article/http/">Android 网络编程(一) 网络基本知识的了解</a></li><li><a href="http://www.xianleshen.com/article/mvp/"> Android快速生成MVP模式代码</a></li></ul></div>
                 
 
                 <hr>
@@ -336,26 +336,6 @@
             <!--加载valine-->
 
             <!-- 相关文章 -->
-            
-            
-
-    <div class="recommended_posts">
-        <h2><span style="font-size:1em">相关文章</span></h2>
-        <ul>
-            
-                <li><a href="http://www.xianleshen.com/article/bluetooth/">Android蓝牙mesh代码分析</a></li>
-            
-                <li><a href="http://www.xianleshen.com/article/hexo-theme-huweihuang/">[Hexo] Theme HuWeihuang</a></li>
-            
-                <li><a href="http://www.xianleshen.com/article/http/">Android 网络编程(一) 网络基本知识的了解</a></li>
-            
-                <li><a href="http://www.xianleshen.com/article/mvp/"> Android快速生成MVP模式代码</a></li>
-            
-        </ul>
-    </div>
-
-
-
                            
             
             <!-- Tabe of Content -->
@@ -367,7 +347,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#hybrid开发webview与js交互实现"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hybrid开发—WebView与js交互实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#一-引言"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">一、  引言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#二-webview与js交互"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">二、WebView与js交互</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一-webview"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">一、WebView</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二-交互小demo"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">二、交互小Demo</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#三-具体实现"><span class="toc-nav-number">1.2.3.</span> <span class="toc-nav-text">三、具体实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-首先是界面xml-布局"><span class="toc-nav-number">1.2.3.1.</span> <span class="toc-nav-text">1、首先是界面xml 布局</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-初始化webview控件"><span class="toc-nav-number">1.2.3.2.</span> <span class="toc-nav-text">2、初始化webView控件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-创建webviewdemohtml文件并将这个html文件放入到main-文件夹下的assets-文件夹内如果没人assets-这个文件吗则创建"><span class="toc-nav-number">1.2.3.3.</span> <span class="toc-nav-text">3、创建WebViewDemo.html文件，并将这个HTML文件放入到main 文件夹下的assets 文件夹内，如果没人assets 这个文件吗，则创建。</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-android通过webview的-loadurl方法调用-js-代码"><span class="toc-nav-number">1.2.3.4.</span> <span class="toc-nav-text">4、Android通过WebView的 loadUrl方法调用 JS 代码</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-js通过webview-的addjavascriptinterface-方法调用-android-代码42及以上的系统才能使用"><span class="toc-nav-number">1.2.3.5.</span> <span class="toc-nav-text">5、JS通过WebView 的addJavascriptInterface 方法调用 Android 代码（4.2及以上的系统才能使用）</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">总结：</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#hybrid开发webview与js交互实现"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hybrid开发—WebView与js交互实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#一-引言"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">一、  引言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#二-webview与js交互"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">二、WebView与js交互</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一-webview"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">一、WebView</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二-交互小demo"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">二、交互小Demo</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#三-具体实现"><span class="toc-nav-number">1.2.3.</span> <span class="toc-nav-text">三、具体实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-首先是界面xml-布局"><span class="toc-nav-number">1.2.3.1.</span> <span class="toc-nav-text">1、首先是界面xml 布局</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-初始化webview控件"><span class="toc-nav-number">1.2.3.2.</span> <span class="toc-nav-text">2、初始化webView控件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-创建webviewdemohtml文件并将这个html文件放入到main-文件夹下的assets-文件夹内如果没人assets-这个文件吗则创建"><span class="toc-nav-number">1.2.3.3.</span> <span class="toc-nav-text">3、创建WebViewDemo.html文件，并将这个HTML文件放入到main 文件夹下的assets 文件夹内，如果没人assets 这个文件吗，则创建。</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4-android通过webview的-loadurl方法调用-js-代码"><span class="toc-nav-number">1.2.3.4.</span> <span class="toc-nav-text">4、Android通过WebView的 loadUrl方法调用 JS 代码</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5-js通过webview-的addjavascriptinterface-方法调用-android-代码42及以上的系统才能使用"><span class="toc-nav-number">1.2.3.5.</span> <span class="toc-nav-text">5、JS通过WebView 的addJavascriptInterface 方法调用 Android 代码（4.2及以上的系统才能使用）</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">总结：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#推荐文章由hexo文章推荐插件驱动"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">推荐文章（由hexo文章推荐插件驱动）</span></a></li></ol>
         
         </div>
       </aside>
