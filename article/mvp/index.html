@@ -94,7 +94,7 @@
                         <h1> Android快速生成MVP模式代码</h1>
                         <h2 class="subheading">MVP模式代码</h2>
                         <span class="meta">
-                            Posted by 沈显乐 on
+                            Posted by  on
                             2019-04-17
                         </span>
                     </div>
@@ -222,7 +222,7 @@
 <li>视图（View）： 专注页面布局和数据显示，如界面的显示</li>
 <li>控制器（Controller）：连接模型和视图，如把视图的请求发送给模型</li>
 </ul>
-<p><img src="./mvp/mvc.jpg" alt="mvc"></p>
+<p><img src="/article/mvp/./mvp/mvc.jpg" alt="mvc"></p>
 <p>MVC实现了视图和模型的分离，避免了视图和模型糅合在一起，当视图改变的时候只要业务逻辑没变不需要改变模型；但是它有一个缺点缺点是因为MVC中的控制器并不能直接更新视图，所以MVC并不能实现视图和模型的完全分离，视图依然依赖模型的数据（数据结构）来显示，也就是说视图依赖模型。</p>
 <h4 id="mvp-模型model-视图view和展示器presenter">MVP:  模型（Model）、视图（View）和展示器（Presenter）</h4>
 <ul>
@@ -230,7 +230,7 @@
 <li>视图（View）：专注页面布局和数据显示，如界面的显示</li>
 <li>展示器（Presenter）：连接模型和视图，处理视图的请求并根据模型更新视图，将模型和视图进行分离了，所有的交互都发生在Persenter 内部。</li>
 </ul>
-<p><img src="./mvp/mvp.png" alt="mvc"></p>
+<p><img src="/article/mvp/./mvp/mvp.png" alt="mvc"></p>
 <p>MVP用展示器代替了控制器，而展示器是可以直接更新视图，所以MVP中展示器可以处理视图的请求并递送到模型又可以根据模型的变化更新视图，实现了视图和模型的完全分离。</p>
 <h4 id="mvvm模型model-视图view和视图模型viewmodel">MVVM：模型（Model）、视图（View）和视图模型（ViewModel）</h4>
 <ul>
@@ -238,7 +238,7 @@
 <li>视图（View）：专注页面布局和数据显示，如界面的显示</li>
 <li>视图模型（ViewModel）：连接模型和视图，也是将模型和视图进行了分离，但视图模型和视图是双向绑定的，当视图发生变化的时候视图模型也会发生改变，当视图模型变化的时候视图也随之变化。</li>
 </ul>
-<p><img src="./mvp/mvvm.png" alt="mvc"></p>
+<p><img src="/article/mvp/./mvp/mvvm.png" alt="mvc"></p>
 <p>MVVM用视图模型代替了MVP中的展示器，视图模型和视图实现了双向绑定，当视图发生变化的时候视图模型也会发生改变，当视图模型变化的时候视图也随之变化。</p>
 <h3 id="二-个人建议在android中采用mvp">二、个人建议在Android中采用MVP</h3>
 <p><strong>MVP相比于MVC的优势：</strong></p>
@@ -253,15 +253,15 @@
 <p><a href="https://blog.csdn.net/singwhatiwanna/article/details/80904132" target="_blank" rel="noopener">MVC、MVP、MVVM，我到底该怎么选？</a>这篇文章，可以根据项目中不同的情况下可以采用的不同的模式。</p>
 <h2 id="android快速生成mvp-模式代码">Android快速生成MVP 模式代码</h2>
 <p><strong>Demo 小例子：通过MVP模式实现登录效果，效果看下图：</strong></p>
-<p><img src="./mvp/login.gif" alt=""></p>
+<p><img src="/article/mvp/./mvp/login.gif" alt=""></p>
 <h4 id="一-安装mvphelper插件">一、安装MVPHelper插件</h4>
 <p>MVPHelper是一款适用于 <code>Intellij IDEA</code> 和 <code>Android Studio</code> 的插件, 可用于为 MVP 架构生成接口以及实现类。在 <strong>Android Studio</strong>  中<code>Setting</code> 窗口的 <code>Plugins</code>选项搜索 <code>MVPHelper</code> 安装即可，具体可看下图。</p>
-<p><img src="./mvp/mvphelper.jpg" alt="mvc"></p>
+<p><img src="/article/mvp/./mvp/mvphelper.jpg" alt="mvc"></p>
 <h4 id="二-使用mvphelper-快速创建mvp">二、使用MVPHelper 快速创建MVP</h4>
 <p>首先在包下创建一个 presenter 空文件夹，然后创建一个LoginPresenter 的类，在类中使用MVPHelper 插件生成接口以及实现类。具体看下图：</p>
-<p><img src="./mvp/mvphelper.gif" alt="mvchelper"></p>
+<p><img src="/article/mvp/./mvp/mvphelper.gif" alt="mvchelper"></p>
 <p>创建成功后会生成如下目录结构：</p>
-<p><img src="./mvp/jiegou.jpg" alt=""></p>
+<p><img src="/article/mvp/./mvp/jiegou.jpg" alt=""></p>
 <h4 id="三-根据生成的mvp目录结构去拆分登录这个过程">三、根据生成的MVP目录结构去拆分登录这个过程</h4>
 <h5 id="1-首先是界面xml布局">1、首先是界面xml布局：</h5>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">"vertical"</span> <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">EditText</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/edtTxt_login_account"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginLeft</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginRight</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:hint</span>=<span class="string">"请输入账号"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">EditText</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/edtTxt_login_password"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginLeft</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginRight</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:hint</span>=<span class="string">"请输入密码"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/btn_login_login"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginLeft</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginRight</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">"登陆"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -487,7 +487,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; 沈显乐 2019 
+                    Copyright &copy; null 2019 
                     <br>
                     Theme by <a href="http://beantech.org">BeanTech</a> 
                     <span style="display: inline-block; margin: 0 5px;">

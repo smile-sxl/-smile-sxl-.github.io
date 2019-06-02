@@ -8,6 +8,14 @@
     </url>
 
     <url>
+        <loc>http://www.xianleshen.com/article/bluetooth/</loc>
+        <lastmod>2019-06-02T02:53:04.882Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://www.xianleshen.com/article/mvp/</loc>
         <lastmod>2019-06-02T01:57:06.655Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -34,14 +42,6 @@
     <url>
         <loc>http://www.xianleshen.com/article/http/</loc>
         <lastmod>2019-06-02T01:54:47.202Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://www.xianleshen.com/article/bluetooth/</loc>
-        <lastmod>2019-06-02T01:53:15.551Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
