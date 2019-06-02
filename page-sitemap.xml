@@ -8,15 +8,22 @@
     </url>
     
     <url>
-        <loc>http://www.xianleshen.com/archive/</loc>
-        <lastmod>2019-06-02T06:25:48.378Z</lastmod>
+        <loc>http://www.xianleshen.com/tags/</loc>
+        <lastmod>2019-06-02T07:07:43.965Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
         <loc>http://www.xianleshen.com/about/</loc>
-        <lastmod>2019-06-02T06:23:38.418Z</lastmod>
+        <lastmod>2019-06-02T07:06:11.416Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>http://www.xianleshen.com/archive/</loc>
+        <lastmod>2019-06-02T06:25:48.378Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
