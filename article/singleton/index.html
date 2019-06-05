@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          沈显乐
+          JAVA设计模式之单例模式在开发中的最常用实现方式 - 沈显乐
         
     </title>
 
-    <link rel="canonical" href="http://www.xianleshen.com/article/JAVA设计模式之单例模式在开发中的最常用实现方式/">
+    <link rel="canonical" href="http://www.xianleshen.com/article/singleton/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -71,7 +71,7 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/article_header/article_bg.jpg')
+            background-image: url('/img/article_header/article_header.png')
             /*post*/
         
     }
@@ -88,9 +88,11 @@
                     <div class="post-heading">
                         <div class="tags">
                             
+                              <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
+                            
                         </div>
-                        <h1></h1>
-                        <h2 class="subheading"></h2>
+                        <h1>JAVA设计模式之单例模式在开发中的最常用实现方式</h1>
+                        <h2 class="subheading">单例模式</h2>
                         <span class="meta">
                             Posted by  on
                             2019-06-05
@@ -140,6 +142,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -148,13 +157,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -302,6 +304,18 @@
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#前言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实现方式"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">实现方式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一-静态内部类实现单例模式"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">一、 静态内部类实现单例模式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二-dcl双重校验锁实现单例模式"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">二、DCL（双重校验锁）实现单例模式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#最后"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">最后</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
                 
             <!-- Sidebar Container -->
             <div class="
@@ -316,6 +330,8 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
+                          <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
+                        
                     </div>
                 </section>
                 
