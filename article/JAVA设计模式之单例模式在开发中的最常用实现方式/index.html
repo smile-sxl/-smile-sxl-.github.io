@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          Git 常用命令操作 - 沈显乐
+          沈显乐
         
     </title>
 
-    <link rel="canonical" href="http://www.xianleshen.com/article/git/">
+    <link rel="canonical" href="http://www.xianleshen.com/article/JAVA设计模式之单例模式在开发中的最常用实现方式/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -71,7 +71,7 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/article_header/article_header.png')
+            background-image: url('/img/article_header/article_bg.jpg')
             /*post*/
         
     }
@@ -88,14 +88,12 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
-                            
                         </div>
-                        <h1>Git 常用命令操作</h1>
-                        <h2 class="subheading">git操作</h2>
+                        <h1></h1>
+                        <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by  on
-                            2018-09-09
+                            2019-06-05
                         </span>
                     </div>
                 
@@ -212,34 +210,20 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="引言">引言</h2>
-<p>  作为一个开发者，相信大家都能理解一个项目大多数都是由一个团队共同合作完成的，这个时候多人之间的代码同步问题就显得很重要，因此版本控制工具就应运而生了。Git是目前世界上最先进的分布式版本控制系统（没有之一），故此整理了一下Git 的常用命令操作。</p>
-<h2 id="1-配置用户名和邮箱地址">1、配置用户名和邮箱地址</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">"xxxx"</span>             <span class="comment"># 用户名</span></span><br><span class="line">git config --global user.email <span class="string">"xxxx@xxx.com"</span>    <span class="comment"># 邮箱</span></span><br></pre></td></tr></table></figure>
-<h2 id="2-创建仓库">2、创建仓库</h2>
-<p>  在电脑合适的位置创建一个新文件夹，通过命令行进入当前文件夹的，然后通过<code>git init</code> 命令把这个目录编程Git 可以管理的仓库。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir github          <span class="comment"># 可不用命令行创建文件夹，但要用命令行进入到创建的文件夹</span></span><br><span class="line">$ <span class="built_in">cd</span> githu</span><br><span class="line">$ <span class="built_in">pwd</span></span><br><span class="line">/Users/smile/github</span><br><span class="line">$ git init              <span class="comment"># 初始化仓库</span></span><br></pre></td></tr></table></figure>
-<h2 id="3-将工作区的修改提交到暂存区">3、将工作区的修改提交到暂存区</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;file&gt;       <span class="comment"># 添加单个文件变化</span></span><br><span class="line">git add .            <span class="comment"># 添加所有的文件变化</span></span><br><span class="line">git rm &lt;file&gt;        <span class="comment"># 移除文件</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-将暂存区的内容提交到版本库">4、将暂存区的内容提交到版本库</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &lt;message&gt;   <span class="comment"># 提交到版本库，message 是本次提交的说明</span></span><br></pre></td></tr></table></figure>
-<p>  这里说下将代码为什么要分两步提交到版本库，这是因为有可能一次要git add很多文件到暂存区，而提交命令git commit则是一次性将add到暂存区的文件都放到分支中。</p>
-<h2 id="5-放弃工作区修改用版本库里的版本替换工作区的版本">5、放弃工作区修改（用版本库里的版本替换工作区的版本）</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- &lt;file&gt;      <span class="comment"># 放弃单个文件的修改 (还没有提到暂存区)</span></span><br><span class="line">git checkout .              <span class="comment"># 放弃所有文件的修改  (还没有提到暂存区)</span></span><br><span class="line">git reset HEAD -- &lt;file&gt;    <span class="comment"># 把暂存区的修改撤销掉（unstage），重新放回工作区</span></span><br><span class="line">git reset HEAD              <span class="comment"># 把暂存区的修改撤销掉（unstage），重新放回工作区，然后执行放弃工作区修改</span></span><br></pre></td></tr></table></figure>
-<h2 id="6-查看在你上次提交之后是否有修改">6、查看在你上次提交之后是否有修改</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git status         </span><br><span class="line">git status -s     <span class="comment"># 加 -s 获得简短的结果输出</span></span><br></pre></td></tr></table></figure>
-<h2 id="7-版本回退">7、版本回退</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span>                        <span class="comment"># 显示从最近到最远的提交日志</span></span><br><span class="line">git reset --hard HEAD^         <span class="comment"># 回退到上一个版本</span></span><br><span class="line">git reset --hard HEAD^^        <span class="comment"># 回退到上上一个版本</span></span><br><span class="line">git reset --hard &lt;commit id&gt;   <span class="comment"># 回退到指定的版本 id可以只写前几位</span></span><br><span class="line">git reflog                     <span class="comment"># 查看HEAD改动记录.</span></span><br></pre></td></tr></table></figure>
-<h2 id="8-创建ssh-key">8、创建SSH Key</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/.ssh      </span><br><span class="line">cat id_rsa.pub     <span class="comment"># 找到本机的ssh</span></span><br><span class="line">ssh-keygen -t rsa -C <span class="string">"youremail@example.com"</span>       <span class="comment">#创建SSH Key</span></span><br></pre></td></tr></table></figure>
-<p>  登录远程项目托管平台的库账号，比如说github，添加SSH Key。</p>
-<h2 id="9-添加远程库">9、添加远程库</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git remote add [name] [url]       <span class="comment"># 添加一个新的远程仓库，可以指定一个简单的名字 后面是远程仓库的地址</span></span><br><span class="line">git remote rm [name]              <span class="comment"># 删除远程仓库</span></span><br><span class="line">git <span class="built_in">clone</span> [url]                   <span class="comment"># 从远程仓库克隆到本地</span></span><br><span class="line">git remote -v                     <span class="comment"># 查看远程仓库</span></span><br><span class="line">git push [<span class="built_in">alias</span>] [branch]         <span class="comment"># 本地库的内容推送到远程  别名 + 分支</span></span><br><span class="line">git pull [<span class="built_in">alias</span>] [branch]         <span class="comment"># 拉取远程仓库</span></span><br></pre></td></tr></table></figure>
-<h2 id="10-分支管理">10、分支管理</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b [branchname]      <span class="comment"># git checkout命令加上-b参数表示创建并切换</span></span><br><span class="line">git branch (branchname)			  <span class="comment"># 创建分支命令</span></span><br><span class="line">git checkout (branchname)         <span class="comment"># 切换分支命令</span></span><br><span class="line">git branch                        <span class="comment"># 列出分支</span></span><br><span class="line">git merge (branchname)            <span class="comment"># 合并指定分支到当前分支</span></span><br><span class="line">git branch -d (branchname)        <span class="comment"># 删除分支命令</span></span><br><span class="line">git <span class="built_in">log</span> --graph                   <span class="comment"># 可以看到分支合并图产品</span></span><br></pre></td></tr></table></figure>
-<h2 id="11-当前分支有修改但是要切换到其他分支">11、当前分支有修改，但是要切换到其他分支</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git stash                         <span class="comment"># 将当前分支修改的内容 stash（储存）起来</span></span><br><span class="line">git status list                   <span class="comment"># 查看 stash 列表</span></span><br><span class="line">git checkout (branchname)         <span class="comment"># 切换到其他分支</span></span><br><span class="line">git stash apply (stashname)       <span class="comment"># 恢复 stash 的内容</span></span><br><span class="line">git stash drop (stashname)        <span class="comment"># 删除 stash 列表中 stash 的记录</span></span><br></pre></td></tr></table></figure>
-<p>  以上就是git在日常使用中常用的基本命令。</p>
+                <h2 id="前言">前言</h2>
+<p>  在Java的诸多设计模式中，我们在开发中使用最简单的大概应该是单例模式了。单例模式的实现我们通常用getInstance() 方法，不管在那个类里面调用这个方法，都只能获取到该类的唯一实例，也就是说在不同的地方调用这个方法获取的都是同一个对象。<code>单例模式的构造器通常是私有的</code>，这样就避免了其他类通过创建构造器的方法创建实例。</p>
+<h2 id="实现方式">实现方式</h2>
+<p>  这里我们只列举两种实现方式，也是在我们开发中经常使用的实现方式，至于像懒汉式、饿汉式、枚举什么的，大概了解下就OK了，实际开发中很少用到。</p>
+<h3 id="一-静态内部类实现单例模式">一、 静态内部类实现单例模式</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Singleton singletonHolder = <span class="keyword">new</span> Singleton();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.singletonHolder;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  这种方式是我来到新公司后经常接触的一种实现方式，也是我非常建议大家去写的一种方式。他的实现思想就是把Singleton 实例放到一个静态内部类SingletonHolder中，这样就能避免静态实例在Singleton 类开始加载的时候就创建出来引发的资源浪费，并且因为这个静态内部类只会被加载一次，所以在多线程调用getInstance() 方法的时候也能够保证线程安全。</p>
+<h3 id="二-dcl双重校验锁实现单例模式">二、DCL（双重校验锁）实现单例模式</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton singleton;  </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span></span>&#123;&#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getSingleton</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">if</span> (singleton == <span class="keyword">null</span>) &#123;  </span><br><span class="line">        <span class="keyword">synchronized</span> (Singleton.class) &#123;  </span><br><span class="line">        <span class="keyword">if</span> (singleton == <span class="keyword">null</span>) &#123;  </span><br><span class="line">            singleton = <span class="keyword">new</span> Singleton();  </span><br><span class="line">        &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> singleton;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  这里采用的是双重检查+锁的方式，安全且在多线程情况下能保持高性能。这里主要介绍下为什么要检查两次，进入方法过后，先检查实例是否存在，如果不存在才进入下面的同步块，这是第一重检查。进入同步块过后，再次检查实例是否存在，如果不存在，就在同步的情况下创建一个实例，这是第二重检查。这样一来，就只需要同步一次了，从而减少了多次在同步情况下进行判断所浪费的时间。</p>
+<h2 id="最后">最后</h2>
+<p>  其实还是要感谢这位作者的这篇文章 <a href="https://www.kaelli.com/24.html" target="_blank" rel="noopener">Java设计模式之单例模式及线程安全的懒加载实现</a>，对单例模式各种实现讲解的真的很详细，我只不过是简单的介绍了下我们开发工作中最常使用的两种实现方式，想看更多的实现方式可以去看这篇文章。作者最后强烈推荐枚举实现单例模式的方式，这里也补充下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span>  Singleton &#123;</span><br><span class="line">    instance;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  我也很喜欢这种实现方式，它是最简单的单例实现方式。但是我在工作中很少见到这种单例的实现方式，如果日后我经常在工作中遇到的话，我会考虑把DCL的那种实现方式用枚举方式替换掉。</p>
 
                 
 
@@ -247,13 +231,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/http/" data-toggle="tooltip" data-placement="top" title="Android 网络编程(一) 网络基本知识的了解">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/thridLogin/" data-toggle="tooltip" data-placement="top" title=" Android QQ、微信、Facebook和推特第三方登录">Next Post &rarr;</a>
+                            <a href="/article/hybrid/" data-toggle="tooltip" data-placement="top" title="Hybrid开发—WebView与js交互实现">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -302,15 +282,15 @@
         <h2><span style="font-size:1em">相关文章</span></h2>
         <ul>
             
+                <li><a href="http://www.xianleshen.com/article/hybrid/">Hybrid开发—WebView与js交互实现</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/mvp/"> Android快速生成MVP模式代码</a></li>
+            
+                <li><a href="http://www.xianleshen.com/article/面试问题整理/">面试问题整理</a></li>
+            
                 <li><a href="http://www.xianleshen.com/article/bluetooth/">Android蓝牙mesh代码分析</a></li>
             
                 <li><a href="http://www.xianleshen.com/article/http3/">Android 网络编程(三) 浅谈HttpURLConnection</a></li>
-            
-                <li><a href="http://www.xianleshen.com/article/http2/">Android 网络编程(二) HTTP协议解析</a></li>
-            
-                <li><a href="http://www.xianleshen.com/article/http/">Android 网络编程(一) 网络基本知识的了解</a></li>
-            
-                <li><a href="http://www.xianleshen.com/article/thridLogin/"> Android QQ、微信、Facebook和推特第三方登录</a></li>
             
         </ul>
     </div>
@@ -321,18 +301,6 @@
             
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
-
-  
-    
-      <aside id="sidebar">
-        <div id="toc" class="toc-article">
-        <strong class="toc-title">Contents</strong>
-        
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#引言"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">引言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-配置用户名和邮箱地址"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1、配置用户名和邮箱地址</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-创建仓库"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2、创建仓库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-将工作区的修改提交到暂存区"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3、将工作区的修改提交到暂存区</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-将暂存区的内容提交到版本库"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">4、将暂存区的内容提交到版本库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-放弃工作区修改用版本库里的版本替换工作区的版本"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">5、放弃工作区修改（用版本库里的版本替换工作区的版本）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-查看在你上次提交之后是否有修改"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">6、查看在你上次提交之后是否有修改</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-版本回退"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">7、版本回退</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-创建ssh-key"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">8、创建SSH Key</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9-添加远程库"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">9、添加远程库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#10-分支管理"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">10、分支管理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#11-当前分支有修改但是要切换到其他分支"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">11、当前分支有修改，但是要切换到其他分支</span></a></li></ol>
-        
-        </div>
-      </aside>
-    
 
                 
             <!-- Sidebar Container -->
@@ -348,8 +316,6 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Hexo" title="Hexo">Hexo</a>
-                        
                     </div>
                 </section>
                 
